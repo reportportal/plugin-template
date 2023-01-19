@@ -11,8 +11,8 @@ plugins {
 
 
 node {
-    version = '10.14.1'
-    npmVersion = '6.4.1'
+    version = '14.19.3'
+    npmVersion = '6.14.17'
     download = true
     workDir = file("${project.buildDir}/plugin/ui")
     nodeModulesDir = file("${project.rootDir}/plugin/ui")
@@ -43,13 +43,6 @@ repositories {
     } else {
         maven { url 'https://jitpack.io' }
     }
-    maven { url "https://jaspersoft.jfrog.io/artifactory/third-party-ce-artifacts" }
-}
-
-dependencyManagement {
-    imports {
-        mavenBom(releaseMode ? 'com.epam.reportportal:commons-bom:5.7.1' : 'com.github.reportportal:commons-bom:4b7ed8a')
-    }
 }
 
 dependencies {
@@ -62,11 +55,6 @@ dependencies {
     }
 
     implementation 'org.springframework.boot:spring-boot-starter-quartz'
-    implementation group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
-
-    testImplementation('org.junit.jupiter:junit-jupiter:5.6.0')
-    testCompile 'org.hamcrest:hamcrest-all:1.3'
-    testCompile 'org.mockito:mockito-all:1.10.19'
 }
 
 spotbugs {

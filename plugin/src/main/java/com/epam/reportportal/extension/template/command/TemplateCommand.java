@@ -10,13 +10,13 @@ import java.util.Map;
  */
 public class TemplateCommand implements PluginCommand<String> {
 
-	@Override
-	public String getName() {
-		return "TemplateCommand";
-	}
+    @Override
+    public String getName() {
+        return "TemplateCommand";
+    }
 
-	@Override
-	public String executeCommand(Integration integration, Map<String, Object> params) {
-		return "TemplateCommand";
-	}
+    @Override
+    public String executeCommand(Integration integration, Map<String, Object> params) {
+        return "TemplateCommand";
+    }
 }
