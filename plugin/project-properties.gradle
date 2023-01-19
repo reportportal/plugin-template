@@ -4,7 +4,6 @@ targetCompatibility = JavaVersion.VERSION_11
 def commonScriptsUrl = 'https://raw.githubusercontent.com/reportportal/gradle-scripts/'
 
 project.ext {
-    dependencyRepos = ["commons-model", "commons-bom", "commons-dao", "plugin-api"]
     releaseMode = project.hasProperty("releaseMode")
     pluginsDir = "$buildDir/plugins"
     scriptsUrl = commonScriptsUrl + (releaseMode ? getProperty('scripts.version') : 'develop')
