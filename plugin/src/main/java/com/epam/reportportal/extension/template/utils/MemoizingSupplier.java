@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * @author <a href="mailto:ivan_budayeu@epam.com">Ivan Budayeu</a>
+ * @author Andrei Piankouski
  */
 public class MemoizingSupplier<T> implements Supplier<T> {
 
