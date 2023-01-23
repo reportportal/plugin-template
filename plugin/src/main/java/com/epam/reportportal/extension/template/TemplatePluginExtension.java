@@ -1,27 +1,25 @@
 package com.epam.reportportal.extension.template;
 
+import com.epam.reportportal.extension.CommonPluginCommand;
+import com.epam.reportportal.extension.PluginCommand;
+import com.epam.reportportal.extension.ReportPortalExtensionPoint;
 import com.epam.reportportal.extension.common.IntegrationTypeProperties;
 import com.epam.reportportal.extension.event.PluginEvent;
 import com.epam.reportportal.extension.template.command.TemplateCommand;
 import com.epam.reportportal.extension.template.event.plugin.PluginEventHandlerFactory;
 import com.epam.reportportal.extension.template.event.plugin.PluginEventListener;
 import com.epam.reportportal.extension.template.utils.MemoizingSupplier;
-import com.epam.reportportal.extension.CommonPluginCommand;
-import com.epam.reportportal.extension.PluginCommand;
-import com.epam.reportportal.extension.ReportPortalExtensionPoint;
-import com.epam.reportportal.extension.util.RequestEntityConverter;
 import com.epam.ta.reportportal.dao.IntegrationRepository;
 import com.epam.ta.reportportal.dao.IntegrationTypeRepository;
 import com.epam.ta.reportportal.dao.LogRepository;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ApplicationEventMulticaster;
+import org.springframework.context.support.AbstractApplicationContext;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +28,7 @@ import java.util.function.Supplier;
 /**
  * @author Andrei Piankouski
  */
-public class TemplatePluginExtension implements ReportPortalExtensionPoint {
+public class TemplatePluginExtension implements ReportPortalExtensionPoint, DisposableBean {
 
     private static final String PLUGIN_ID = "template";
     public static final String BINARY_DATA_PROPERTIES_FILE_ID = "binary-data.properties";
@@ -38,9 +36,6 @@ public class TemplatePluginExtension implements ReportPortalExtensionPoint {
     private final Supplier<Map<String, PluginCommand>> pluginCommandMapping = new MemoizingSupplier<>(this::getCommands);
 
     private final Supplier<Map<String, CommonPluginCommand<?>>> commonPluginCommandMapping = new MemoizingSupplier<>(this::getCommonCommands);
-
-    private final ObjectMapper objectMapper;
-    private final RequestEntityConverter requestEntityConverter;
 
     private final String resourcesDir;
 
@@ -60,25 +55,34 @@ public class TemplatePluginExtension implements ReportPortalExtensionPoint {
 
     public TemplatePluginExtension(Map<String, Object> initParams) {
         resourcesDir = IntegrationTypeProperties.RESOURCES_DIRECTORY.getValue(initParams).map(String::valueOf).orElse("");
-        objectMapper = configureObjectMapper();
 
         pluginLoadedListener = new MemoizingSupplier<>(() -> new PluginEventListener(PLUGIN_ID,
-                new PluginEventHandlerFactory(resourcesDir,
-                        integrationTypeRepository,
-                        integrationRepository
-                )
+                new PluginEventHandlerFactory(resourcesDir, integrationTypeRepository, integrationRepository)
         ));
-
-        requestEntityConverter = new RequestEntityConverter(objectMapper);
     }
 
-    protected ObjectMapper configureObjectMapper() {
-        ObjectMapper om = new ObjectMapper();
-        om.setAnnotationIntrospector(new JacksonAnnotationIntrospector());
-        om.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
-        om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        om.registerModule(new JavaTimeModule());
-        return om;
+    @PostConstruct
+    public void createIntegration() {
+        initListeners();
+    }
+
+    private void initListeners() {
+        ApplicationEventMulticaster applicationEventMulticaster = applicationContext.getBean(AbstractApplicationContext.APPLICATION_EVENT_MULTICASTER_BEAN_NAME,
+                ApplicationEventMulticaster.class
+        );
+        applicationEventMulticaster.addApplicationListener(pluginLoadedListener.get());
+    }
+
+    @Override
+    public void destroy() {
+        removeListeners();
+    }
+
+    private void removeListeners() {
+        ApplicationEventMulticaster applicationEventMulticaster = applicationContext.getBean(AbstractApplicationContext.APPLICATION_EVENT_MULTICASTER_BEAN_NAME,
+                ApplicationEventMulticaster.class
+        );
+        applicationEventMulticaster.removeApplicationListener(pluginLoadedListener.get());
     }
 
     @Override
