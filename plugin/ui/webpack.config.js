@@ -62,7 +62,7 @@ const config = {
   },
   externals: ['redux'],
   plugins: [
-    new ForkTsCheckerWebpackPlugin({ typescript: { memoryLimit: 4096 } }),
+    new ForkTsCheckerWebpackPlugin(),
     new ESLintWebpackPlugin({
       context: './src',
       extensions: ['.scss', '.css', '.ts', '.tsx'],
@@ -113,7 +113,10 @@ const config = {
       },
     }),
     new CopyPlugin({
-      patterns: [{ from: path.resolve(__dirname, './src/metadata.json') }],
+      patterns: [
+        { from: path.resolve(__dirname, './src/metadata.json') },
+        { from: path.resolve(__dirname, './src/plugin-icon.svg') },
+      ],
     }),
   ],
 };

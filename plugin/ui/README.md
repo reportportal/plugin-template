@@ -1,4 +1,4 @@
-# Billing plugin for Epam Report Portal
+# Plugin template for Epam Report Portal
 
 ## UI
 
