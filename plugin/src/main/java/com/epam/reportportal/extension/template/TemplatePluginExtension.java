@@ -18,6 +18,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ApplicationEventMulticaster;
 import org.springframework.context.support.AbstractApplicationContext;
+import org.pf4j.Extension;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import java.util.function.Supplier;
 /**
  * @author Andrei Piankouski
  */
+@Extension
 public class TemplatePluginExtension implements ReportPortalExtensionPoint, DisposableBean {
 
     private static final String PLUGIN_ID = "template";
