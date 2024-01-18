@@ -13,7 +13,7 @@ npm run dev # Run webpack in dev watch mode
 npm run start # Serve built files
 ```
 
-_Available only from RP v5.8_: use
+_Available only from RP v24.1_: use
 ```javascript
 window.RP.overrideExtension(pluginName, url);
 ```
@@ -24,7 +24,7 @@ window.RP.overrideExtension('plugin name', 'http://localhost:9090');
 
 Build the UI source code: `npm run build`
 
-**How it works**: [UI plugin docs](https://github.com/reportportal/service-ui/blob/master/docs/14-plugins.md).
+**How UI plugin works** (need to be updated): [UI plugin docs](https://github.com/reportportal/service-ui/blob/master/docs/14-plugins.md).
 
 ## Build the plugin
 
