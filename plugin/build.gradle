@@ -11,8 +11,8 @@ plugins {
 
 
 node {
-    version = '14.19.3'
-    npmVersion = '6.14.17'
+    version = '20.11.0'
+    npmVersion = '10.2.4'
     download = true
     workDir = file("${project.buildDir}/plugin/ui")
     nodeModulesDir = file("${project.rootDir}/plugin/ui")
