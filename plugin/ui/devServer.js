@@ -1,7 +1,7 @@
 const http = require('http');
 const staticServer = require('node-static');
 
-const contentPath = './build';
+const contentPath = './build/public';
 const headers = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': '*',
