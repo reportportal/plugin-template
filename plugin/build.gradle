@@ -28,22 +28,30 @@ npm_run_build {
 apply from: 'project-properties.gradle'
 
 repositories {
+    mavenCentral()
     mavenLocal()
-    mavenCentral { url "https://repo1.maven.org/maven2" }
-    if (!releaseMode) {
+    if (releaseMode) {
+        dependencyRepos.forEach { path ->
+            maven {
+                setUrl("https://maven.pkg.github.com/reportportal/${path}")
+                credentials {
+                    username = findProperty("githubUserName")
+                    password = findProperty("githubToken")
+                }
+            }
+        }
+    } else {
         maven { url 'https://jitpack.io' }
     }
 }
 
 dependencies {
     if (releaseMode) {
-        implementation 'com.epam.reportportal:commons-dao'
         implementation 'com.epam.reportportal:plugin-api'
         annotationProcessor 'com.epam.reportportal:plugin-api'
     } else {
-        implementation 'com.github.reportportal:commons-dao:fa04c1f'
-        implementation 'com.github.reportportal:plugin-api:20ab960'
-        annotationProcessor 'com.github.reportportal:plugin-api:20ab960'
+        implementation 'com.github.reportportal:plugin-api:5.7.0'
+        annotationProcessor 'com.github.reportportal:plugin-api:5.7.0'
     }
 }
 

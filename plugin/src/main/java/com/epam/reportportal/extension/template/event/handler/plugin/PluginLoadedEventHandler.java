@@ -3,13 +3,13 @@ package com.epam.reportportal.extension.template.event.handler.plugin;
 import com.epam.reportportal.extension.event.PluginEvent;
 import com.epam.reportportal.extension.template.TemplatePluginExtension;
 import com.epam.reportportal.extension.template.event.handler.EventHandler;
-import com.epam.reportportal.rules.exception.ErrorType;
-import com.epam.reportportal.rules.exception.ReportPortalException;
 import com.epam.ta.reportportal.dao.IntegrationRepository;
 import com.epam.ta.reportportal.dao.IntegrationTypeRepository;
 import com.epam.ta.reportportal.entity.integration.Integration;
 import com.epam.ta.reportportal.entity.integration.IntegrationParams;
 import com.epam.ta.reportportal.entity.integration.IntegrationType;
+import com.epam.ta.reportportal.exception.ReportPortalException;
+import com.epam.ta.reportportal.ws.model.ErrorType;
 
 import java.io.IOException;
 import java.io.InputStream;
