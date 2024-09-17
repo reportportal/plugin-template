@@ -13,7 +13,12 @@
     "strict": true,
     "jsx": "react-jsx",
     "paths": {
-      "*": ["node_modules/*"]
+      "*": ["node_modules/*"],
+      "extensionProps/components": ["src/types/extensionProps/componentsTypes"],
+      "extensionProps/common": ["src/types/extensionProps/common"],
+      "extensionProps/utils": ["src/types/extensionProps/utilsTypes"],
+      "extensionProps/actions": ["src/types/extensionProps/actionsTypes"],
+      "extensionProps/validators": ["src/types/extensionProps/validatorTypes"],
     },
     "typeRoots": ["node_modules/@types"],
     "outDir": "build/types",
