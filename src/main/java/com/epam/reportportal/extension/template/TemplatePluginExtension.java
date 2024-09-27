@@ -8,6 +8,7 @@ import com.epam.reportportal.extension.event.PluginEvent;
 import com.epam.reportportal.extension.template.command.TemplateCommand;
 import com.epam.reportportal.extension.template.event.plugin.PluginEventHandlerFactory;
 import com.epam.reportportal.extension.template.event.plugin.PluginEventListener;
+import com.epam.reportportal.extension.template.info.impl.PluginInfoProviderImpl;
 import com.epam.reportportal.extension.template.utils.MemoizingSupplier;
 import com.epam.ta.reportportal.dao.IntegrationRepository;
 import com.epam.ta.reportportal.dao.IntegrationTypeRepository;
@@ -59,7 +60,9 @@ public class TemplatePluginExtension implements ReportPortalExtensionPoint, Disp
         resourcesDir = IntegrationTypeProperties.RESOURCES_DIRECTORY.getValue(initParams).map(String::valueOf).orElse("");
 
         pluginLoadedListener = new MemoizingSupplier<>(() -> new PluginEventListener(PLUGIN_ID,
-                new PluginEventHandlerFactory(resourcesDir, integrationTypeRepository, integrationRepository)
+            new PluginEventHandlerFactory(resourcesDir, integrationTypeRepository, integrationRepository,
+                new PluginInfoProviderImpl(resourcesDir, BINARY_DATA_PROPERTIES_FILE_ID)
+            )
         ));
     }
 
