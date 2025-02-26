@@ -1,11 +1,8 @@
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
-
 def commonScriptsUrl = 'https://raw.githubusercontent.com/reportportal/gradle-scripts/'
 
 project.ext {
     releaseMode = project.hasProperty("releaseMode")
-    pluginsDir = "$buildDir/plugins"
+    pluginsDir = layout.buildDirectory.dir('plugins').get().asFile.absolutePath
     scriptsUrl = commonScriptsUrl + (releaseMode ? getProperty('scripts.version') : 'develop')
     excludeTests = [
             '**/entity/**',
