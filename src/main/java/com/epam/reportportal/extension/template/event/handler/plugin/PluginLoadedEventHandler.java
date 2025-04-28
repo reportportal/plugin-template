@@ -2,7 +2,6 @@ package com.epam.reportportal.extension.template.event.handler.plugin;
 
 import com.epam.reportportal.extension.event.PluginEvent;
 import com.epam.reportportal.extension.template.event.handler.EventHandler;
-import com.epam.reportportal.extension.template.info.PluginInfoProvider;
 import com.epam.ta.reportportal.dao.IntegrationRepository;
 import com.epam.ta.reportportal.dao.IntegrationTypeRepository;
 import com.epam.ta.reportportal.entity.integration.Integration;
@@ -18,25 +17,19 @@ import java.util.List;
  */
 public class PluginLoadedEventHandler implements EventHandler<PluginEvent> {
 
-	private final String resourcesDir;
 	private final IntegrationTypeRepository integrationTypeRepository;
 	private final IntegrationRepository integrationRepository;
-	private final PluginInfoProvider pluginInfoProvider;
 
-	public PluginLoadedEventHandler(String resourcesDir, IntegrationTypeRepository integrationTypeRepository,
-			IntegrationRepository integrationRepository, PluginInfoProvider pluginInfoProvider) {
-		this.resourcesDir = resourcesDir;
+	public PluginLoadedEventHandler(IntegrationTypeRepository integrationTypeRepository,
+			IntegrationRepository integrationRepository) {
 		this.integrationTypeRepository = integrationTypeRepository;
 		this.integrationRepository = integrationRepository;
-		this.pluginInfoProvider = pluginInfoProvider;
 	}
 
 	@Override
 	public void handle(PluginEvent event) {
-		integrationTypeRepository.findByName(event.getPluginId()).ifPresent(integrationType -> {
-			createIntegration(event.getPluginId(), integrationType);
-			integrationTypeRepository.save(pluginInfoProvider.provide(integrationType));
-		});
+		integrationTypeRepository.findByName(event.getPluginId()).ifPresent(integrationType ->
+			createIntegration(event.getPluginId(), integrationType));
 	}
 
 	private void createIntegration(String name, IntegrationType integrationType) {

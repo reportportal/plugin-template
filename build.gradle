@@ -85,11 +85,19 @@ jar {
     manifest {
         attributes(
                 "Class-Path": configurations.runtimeClasspath.collect { it.getName() }.join(' '),
+                "Plugin-Class": "${pluginClass}",
                 "Plugin-Id": "${pluginId}",
+                "Plugin-Name": "${pluginName}",
                 "Plugin-Version": "${project.version}",
-                "Plugin-Provider": "Report Portal",
-                "Plugin-Class": "com.epam.reportportal.extension.template.TemplatePlugin",
-                "Plugin-Service": "api"
+                "Plugin-Provider": "${provider}",
+                "Plugin-License": "${license}",
+                "Plugin-Description": "${project.description}",
+                "Plugin-Documentation": "${documentation}",
+                "Plugin-Metadata-isIntegrationsAllowed": "${isIntegrationsAllowed}",
+                "Plugin-Metadata-embedded": "${isEmbedded}",
+                "Plugin-Metadata-isMultiple": "${isMultiple}",
+                "Plugin-Metadata-yourAdditionalMetadata": "${yourAdditionalMetadata}",
+                "Plugin-Property-yourAdditionalProperty": "${yourAdditionalProperty}",
         )
     }
 }
