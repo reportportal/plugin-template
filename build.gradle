@@ -96,6 +96,7 @@ jar {
                 "Plugin-Metadata-isIntegrationsAllowed": "${isIntegrationsAllowed}",
                 "Plugin-Metadata-embedded": "${isEmbedded}",
                 "Plugin-Metadata-isMultiple": "${isMultiple}",
+                "Plugin-Binary-Data-main": "${mainBinaryData}",
                 "Plugin-Metadata-yourAdditionalMetadata": "${yourAdditionalMetadata}",
                 "Plugin-Property-yourAdditionalProperty": "${yourAdditionalProperty}",
         )
