@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import org.pf4j.Extension;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,68 +26,66 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.stereotype.Service;
 
 /**
+ * This extension class is used to handle events and create a default integration.
+ *
  * @author Andrei Piankouski
  */
 @Extension
 @Service
 public class TemplatePluginExtension implements ReportPortalExtensionPoint, DisposableBean {
-    private final Supplier<Map<String, PluginCommand>> pluginCommandMapping = new MemoizingSupplier<>(this::getCommands);
 
-    private final Supplier<Map<String, CommonPluginCommand<?>>> commonPluginCommandMapping = new MemoizingSupplier<>(this::getCommonCommands);
+  private final Supplier<Map<String, PluginCommand>> pluginCommandMapping = new MemoizingSupplier<>(
+      this::getCommands);
 
-    @Autowired
-    private LogRepository logRepository;
+  private final Supplier<Map<String, CommonPluginCommand<?>>> commonPluginCommandMapping = new MemoizingSupplier<>(
+      this::getCommonCommands);
 
-    @Autowired
-    private ApplicationContext applicationContext;
+  @Autowired
+  private LogRepository logRepository;
 
-    // Delete pluginLoadedListener if you don't need to create default integration.
-    private final Supplier<ApplicationListener<PluginEvent>> pluginLoadedListener;
+  @Autowired
+  private ApplicationContext applicationContext;
 
-    // Delete integrationTypeRepository if you don't need to create default integration.
-    @Autowired
-    private IntegrationTypeRepository integrationTypeRepository;
+  private final Supplier<ApplicationListener<PluginEvent>> pluginLoadedListener;
 
-    // Delete integrationTypeRepository if you don't need to create default integration.
-    @Autowired
-    private IntegrationRepository integrationRepository;
+  @Autowired
+  private IntegrationTypeRepository integrationTypeRepository;
 
-    // Delete TemplatePluginExtension if you don't need to create default integration.
-    public TemplatePluginExtension(Map<String, Object> initParams) {
-        pluginLoadedListener = new MemoizingSupplier<>(() -> new PluginEventListener(
-            "template",
-            new PluginEventHandlerFactory(integrationTypeRepository, integrationRepository)
-        ));
-    }
+  @Autowired
+  private IntegrationRepository integrationRepository;
 
-    // Delete this constructor if you don't need to create default integration.
-    @PostConstruct
-    public void createIntegration() {
-        initListeners();
-    }
+  public TemplatePluginExtension() {
+    pluginLoadedListener = new MemoizingSupplier<>(() -> new PluginEventListener(
+        "template",
+        new PluginEventHandlerFactory(integrationTypeRepository, integrationRepository)
+    ));
+  }
 
-    // Delete this method if you don't need to create default integration.
-    private void initListeners() {
-        ApplicationEventMulticaster applicationEventMulticaster = applicationContext.getBean(
-            AbstractApplicationContext.APPLICATION_EVENT_MULTICASTER_BEAN_NAME,
-            ApplicationEventMulticaster.class
-        );
-        applicationEventMulticaster.addApplicationListener(pluginLoadedListener.get());
-    }
+  @PostConstruct
+  public void createIntegration() {
+    initListeners();
+  }
 
-    // Delete this method if you don't need to create default integration.
-    @Override
-    public void destroy() {
-        removeListeners();
-    }
+  private void initListeners() {
+    ApplicationEventMulticaster applicationEventMulticaster = applicationContext.getBean(
+        AbstractApplicationContext.APPLICATION_EVENT_MULTICASTER_BEAN_NAME,
+        ApplicationEventMulticaster.class
+    );
+    applicationEventMulticaster.addApplicationListener(pluginLoadedListener.get());
+  }
 
-    // Delete this method if you don't need to create default integration.
-    private void removeListeners() {
-        ApplicationEventMulticaster applicationEventMulticaster = applicationContext.getBean(AbstractApplicationContext.APPLICATION_EVENT_MULTICASTER_BEAN_NAME,
-            ApplicationEventMulticaster.class
-        );
-        applicationEventMulticaster.removeApplicationListener(pluginLoadedListener.get());
-    }
+  @Override
+  public void destroy() {
+    removeListeners();
+  }
+
+  private void removeListeners() {
+    ApplicationEventMulticaster applicationEventMulticaster = applicationContext.getBean(
+        AbstractApplicationContext.APPLICATION_EVENT_MULTICASTER_BEAN_NAME,
+        ApplicationEventMulticaster.class
+    );
+    applicationEventMulticaster.removeApplicationListener(pluginLoadedListener.get());
+  }
 
   @Override
   public Map<String, ?> getPluginParams() {
