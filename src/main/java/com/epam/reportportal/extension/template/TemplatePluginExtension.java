@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Use this extension class if you don't need to handle any events and create a default
- * integration. Moreover, you can delete java/com/epam/reportportal/extension/template/event.
+ * integration.
  *
  * @author Reingold Shekhtel
  */
