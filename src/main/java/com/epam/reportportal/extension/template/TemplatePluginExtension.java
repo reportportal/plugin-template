@@ -26,7 +26,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.stereotype.Service;
 
 /**
- * This extension class is used to handle events and create a default integration.
+ * Use this extension if you need to handle events and create a default integration.
  *
  * @author Andrei Piankouski
  */
