@@ -18,7 +18,7 @@ public class PluginEventHandlerFactory implements EventHandlerFactory<PluginEven
 
   private final Map<String, EventHandler<PluginEvent>> eventHandlerMapping;
 
-  public PluginEventHandlerFactory(String resourcesDir,
+  public PluginEventHandlerFactory(
       IntegrationTypeRepository integrationTypeRepository,
       IntegrationRepository integrationRepository
   ){
