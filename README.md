@@ -10,7 +10,7 @@ Build the UI source code: `npm run build`
 
 This template plugin has the following extension types:
 
-- `TemplatePluginExtension.java` - a simple extension with no listeners. Create a plugin with a information defined in the Manifest file via Gradle.
+- `TemplatePluginExtension` - a simple extension with no listeners. Create a plugin with a information defined in the Manifest file via Gradle.
 - `TemplatePluginExtensionWithListener` - an extension with a listener. Use it if you need to create a plugin with a `load` listener. Create a default plugin integration.
 
 Pick one and delete an unnecessary file.
