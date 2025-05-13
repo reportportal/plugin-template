@@ -36,6 +36,13 @@ repositories {
     }
 }
 
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.boot:spring-boot-dependencies:3.4.4")
+        mavenBom("com.epam.reportportal:commons-bom:5.13.2")
+    }
+}
+
 dependencies {
     if (releaseMode) {
         implementation 'com.epam.reportportal:plugin-api'
@@ -45,7 +52,7 @@ dependencies {
         annotationProcessor 'com.epam.reportportal:plugin-api:5.12.0'
     }
 
-    implementation 'org.hibernate:hibernate-core:5.6.15.Final'
+    implementation 'jakarta.annotation:jakarta.annotation-api:3.0.0'
 }
 
 test {
@@ -85,11 +92,20 @@ jar {
     manifest {
         attributes(
                 "Class-Path": configurations.runtimeClasspath.collect { it.getName() }.join(' '),
+                "Plugin-Class": "${pluginClass}",
                 "Plugin-Id": "${pluginId}",
+                "Plugin-Name": "${pluginName}",
                 "Plugin-Version": "${project.version}",
-                "Plugin-Provider": "Report Portal",
-                "Plugin-Class": "com.epam.reportportal.extension.template.TemplatePlugin",
-                "Plugin-Service": "api"
+                "Plugin-Provider": "${provider}",
+                "Plugin-License": "${license}",
+                "Plugin-Description": "${project.description}",
+                "Plugin-Documentation": "${documentation}",
+                "Plugin-Metadata-isIntegrationsAllowed": "${isIntegrationsAllowed}",
+                "Plugin-Metadata-embedded": "${isEmbedded}",
+                "Plugin-Metadata-isMultiple": "${isMultiple}",
+                "Plugin-Binary-Data-main": "${mainBinaryData}",
+                "Plugin-Metadata-yourAdditionalMetadata": "${yourAdditionalMetadata}",
+                "Plugin-Property-yourAdditionalProperty": "${yourAdditionalProperty}",
         )
     }
 }
