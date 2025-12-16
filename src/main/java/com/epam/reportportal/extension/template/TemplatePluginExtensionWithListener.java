@@ -1,3 +1,19 @@
+/*
+ * Copyright 2025 EPAM Systems
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.epam.reportportal.extension.template;
 
 import com.epam.reportportal.extension.CommonPluginCommand;
@@ -8,14 +24,14 @@ import com.epam.reportportal.extension.template.command.TemplateCommand;
 import com.epam.reportportal.extension.template.event.plugin.PluginEventHandlerFactory;
 import com.epam.reportportal.extension.template.event.plugin.PluginEventListener;
 import com.epam.reportportal.extension.template.utils.MemoizingSupplier;
-import com.epam.ta.reportportal.dao.IntegrationRepository;
-import com.epam.ta.reportportal.dao.IntegrationTypeRepository;
-import com.epam.ta.reportportal.dao.LogRepository;
+import com.epam.reportportal.infrastructure.persistence.dao.IntegrationRepository;
+import com.epam.reportportal.infrastructure.persistence.dao.IntegrationTypeRepository;
+import com.epam.reportportal.infrastructure.persistence.dao.LogRepository;
+import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
-import jakarta.annotation.PostConstruct;
 import org.pf4j.Extension;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +49,7 @@ import org.springframework.stereotype.Service;
 @Extension
 @Service
 public class TemplatePluginExtensionWithListener implements ReportPortalExtensionPoint, DisposableBean {
+
   private static final String PLUGIN_ID = "template";
 
   private final Supplier<Map<String, PluginCommand>> pluginCommandMapping = new MemoizingSupplier<>(

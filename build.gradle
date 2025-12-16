@@ -36,23 +36,16 @@ repositories {
     }
 }
 
-dependencyManagement {
-    imports {
-        mavenBom("org.springframework.boot:spring-boot-dependencies:3.4.4")
-        mavenBom("com.epam.reportportal:commons-bom:5.13.2")
-    }
-}
-
 dependencies {
     if (releaseMode) {
-        implementation 'com.epam.reportportal:plugin-api'
-        annotationProcessor 'com.epam.reportportal:plugin-api'
+        implementation 'com.epam.reportportal:service-api'
+        annotationProcessor 'com.epam.reportportal:service-api'
     } else {
-        implementation 'com.epam.reportportal:plugin-api:5.12.0'
-        annotationProcessor 'com.epam.reportportal:plugin-api:5.12.0'
+        implementation 'com.github.reportportal:service-api:9e128be'
+        annotationProcessor 'com.github.reportportal:service-api:9e128be'
     }
 
-    implementation 'jakarta.annotation:jakarta.annotation-api:3.0.0'
+    // additional dependencies should be included in shadowJar section
 }
 
 test {
@@ -120,6 +113,8 @@ shadowJar {
     configurations = [project.configurations.runtimeClasspath]
     zip64 = true
     dependencies {
+        // example:
+        // include(dependency("org.apache.tomcat:tomcat-annotations-api:.*"))
     }
 }
 
@@ -144,4 +139,3 @@ tasks.register('assemblePlugins', Copy) {
 }
 
 compileJava.dependsOn npm_run_build
-
