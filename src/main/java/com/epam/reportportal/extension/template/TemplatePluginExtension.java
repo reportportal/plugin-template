@@ -18,13 +18,16 @@ package com.epam.reportportal.extension.template;
 
 import static com.epam.reportportal.extension.util.PluginManifestUtils.readPluginIdFromManifest;
 
+import com.epam.reportportal.core.events.domain.PluginDeletedEvent;
 import com.epam.reportportal.core.events.domain.PluginUploadedEvent;
 import com.epam.reportportal.extension.CommonPluginCommand;
 import com.epam.reportportal.extension.PluginCommand;
 import com.epam.reportportal.extension.ReportPortalExtensionPoint;
 import com.epam.reportportal.extension.template.command.TemplateCommand;
-import com.epam.reportportal.extension.template.event.plugin.PluginEventHandlerFactory;
-import com.epam.reportportal.extension.template.event.plugin.PluginEventListener;
+import com.epam.reportportal.extension.template.event.handler.PluginDeletedEventHandler;
+import com.epam.reportportal.extension.template.event.handler.PluginLoadedEventHandler;
+import com.epam.reportportal.extension.template.event.listener.PluginDeletedEventListener;
+import com.epam.reportportal.extension.template.event.listener.PluginLoadedEventListener;
 import com.epam.reportportal.extension.template.utils.MemoizingSupplier;
 import com.epam.reportportal.infrastructure.persistence.dao.IntegrationRepository;
 import com.epam.reportportal.infrastructure.persistence.dao.IntegrationTypeRepository;
@@ -78,6 +81,7 @@ public class TemplatePluginExtension implements ReportPortalExtensionPoint, Disp
   private final Supplier<Map<String, CommonPluginCommand<?>>> commonPluginCommandMapping =
       new MemoizingSupplier<>(this::getCommonCommands);
   private final Supplier<ApplicationListener<PluginUploadedEvent>> pluginLoadedListener;
+  private final Supplier<ApplicationListener<PluginDeletedEvent>> pluginDeletedListener;
 
   @Autowired
   private ApplicationContext applicationContext;
@@ -97,15 +101,18 @@ public class TemplatePluginExtension implements ReportPortalExtensionPoint, Disp
    * Creates a new instance of the extension.
    *
    * <p>Reads the plugin id from the plugin manifest (falling back to {@code DEFAULT_PLUGIN_ID})
-   * and initializes a memorizing supplier for the {@link PluginEventListener}. The actual repositories are injected by
-   * Spring and will be used when the supplier is first invoked. Remove the PluginEventListener initialization if the
-   * plugin does not require processing plugin events
+   * and initializes a memorizing supplier for the {@link PluginLoadedEventListener}. The actual repositories are
+   * injected by Spring and will be used when the supplier is first invoked. Remove the PluginLoadedEventListener
+   * initialization if the plugin does not require processing plugin events
    */
   public TemplatePluginExtension() {
     this.pluginId = readPluginIdFromManifest(this.getClass(), DEFAULT_PLUGIN_ID);
-    pluginLoadedListener = new MemoizingSupplier<>(() -> new PluginEventListener(
+    pluginLoadedListener = new MemoizingSupplier<>(() -> new PluginLoadedEventListener(
+        pluginId, new PluginLoadedEventHandler(integrationTypeRepository, integrationRepository)
+    ));
+    pluginDeletedListener = new MemoizingSupplier<>(() -> new PluginDeletedEventListener(
         pluginId,
-        new PluginEventHandlerFactory(integrationTypeRepository, integrationRepository)
+        new PluginDeletedEventHandler(integrationTypeRepository, integrationRepository)
     ));
   }
 
@@ -151,6 +158,7 @@ public class TemplatePluginExtension implements ReportPortalExtensionPoint, Disp
         ApplicationEventMulticaster.class
     );
     applicationEventMulticaster.addApplicationListener(pluginLoadedListener.get());
+    applicationEventMulticaster.addApplicationListener(pluginDeletedListener.get());
   }
 
 
@@ -169,6 +177,7 @@ public class TemplatePluginExtension implements ReportPortalExtensionPoint, Disp
         ApplicationEventMulticaster.class
     );
     applicationEventMulticaster.removeApplicationListener(pluginLoadedListener.get());
+    applicationEventMulticaster.removeApplicationListener(pluginDeletedListener.get());
   }
 
   /**

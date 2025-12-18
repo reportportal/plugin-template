@@ -14,34 +14,29 @@
  * limitations under the License.
  */
 
-package com.epam.reportportal.extension.template.event.plugin;
-
-import static java.util.Optional.ofNullable;
+package com.epam.reportportal.extension.template.event.listener;
 
 import com.epam.reportportal.core.events.domain.PluginUploadedEvent;
-import com.epam.reportportal.extension.template.event.EventHandlerFactory;
+import com.epam.reportportal.extension.template.event.handler.PluginLoadedEventHandler;
 import org.springframework.context.ApplicationListener;
 
 /**
  * @author Andrei Piankouski
  */
-public class PluginEventListener implements ApplicationListener<PluginUploadedEvent> {
+public class PluginLoadedEventListener implements ApplicationListener<PluginUploadedEvent> {
 
   private final String pluginId;
-  private final EventHandlerFactory<PluginUploadedEvent> pluginEventHandlerFactory;
+  private final PluginLoadedEventHandler pluginLoadedEventHandler;
 
-  public PluginEventListener(String pluginId,
-      EventHandlerFactory<PluginUploadedEvent> pluginEventHandlerFactory) {
+  public PluginLoadedEventListener(String pluginId, PluginLoadedEventHandler pluginLoadedEventHandler) {
     this.pluginId = pluginId;
-    this.pluginEventHandlerFactory = pluginEventHandlerFactory;
+    this.pluginLoadedEventHandler = pluginLoadedEventHandler;
   }
 
   @Override
   public void onApplicationEvent(PluginUploadedEvent event) {
     if (supports(event)) {
-      ofNullable(pluginEventHandlerFactory.getEventHandler(event.getPluginActivityResource().getName()))
-          .ifPresent(pluginEventEventHandler ->
-              pluginEventEventHandler.handle(event));
+      pluginLoadedEventHandler.handle(event);
     }
   }
 

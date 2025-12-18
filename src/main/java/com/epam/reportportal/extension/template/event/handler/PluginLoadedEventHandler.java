@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.epam.reportportal.extension.template.event.handler.plugin;
+package com.epam.reportportal.extension.template.event.handler;
 
+import com.epam.reportportal.core.events.domain.PluginDeletedEvent;
 import com.epam.reportportal.core.events.domain.PluginUploadedEvent;
-import com.epam.reportportal.extension.template.event.handler.EventHandler;
 import com.epam.reportportal.infrastructure.persistence.dao.IntegrationRepository;
 import com.epam.reportportal.infrastructure.persistence.dao.IntegrationTypeRepository;
 import com.epam.reportportal.infrastructure.persistence.entity.integration.Integration;
