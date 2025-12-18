@@ -18,34 +18,34 @@ package com.epam.reportportal.extension.template.event.plugin;
 
 import static java.util.Optional.ofNullable;
 
-import com.epam.reportportal.extension.event.PluginEvent;
+import com.epam.reportportal.core.events.domain.PluginUploadedEvent;
 import com.epam.reportportal.extension.template.event.EventHandlerFactory;
 import org.springframework.context.ApplicationListener;
 
 /**
  * @author Andrei Piankouski
  */
-public class PluginEventListener implements ApplicationListener<PluginEvent> {
+public class PluginEventListener implements ApplicationListener<PluginUploadedEvent> {
 
   private final String pluginId;
-  private final EventHandlerFactory<PluginEvent> pluginEventEventHandlerFactory;
+  private final EventHandlerFactory<PluginUploadedEvent> pluginEventHandlerFactory;
 
   public PluginEventListener(String pluginId,
-      EventHandlerFactory<PluginEvent> pluginEventEventHandlerFactory) {
+      EventHandlerFactory<PluginUploadedEvent> pluginEventHandlerFactory) {
     this.pluginId = pluginId;
-    this.pluginEventEventHandlerFactory = pluginEventEventHandlerFactory;
+    this.pluginEventHandlerFactory = pluginEventHandlerFactory;
   }
 
   @Override
-  public void onApplicationEvent(PluginEvent event) {
+  public void onApplicationEvent(PluginUploadedEvent event) {
     if (supports(event)) {
-      ofNullable(pluginEventEventHandlerFactory.getEventHandler(event.getType()))
+      ofNullable(pluginEventHandlerFactory.getEventHandler(event.getPluginActivityResource().getName()))
           .ifPresent(pluginEventEventHandler ->
               pluginEventEventHandler.handle(event));
     }
   }
 
-  private boolean supports(PluginEvent event) {
-    return pluginId.equals(event.getPluginId());
+  private boolean supports(PluginUploadedEvent event) {
+    return pluginId.equals(event.getPluginActivityResource().getName());
   }
 }

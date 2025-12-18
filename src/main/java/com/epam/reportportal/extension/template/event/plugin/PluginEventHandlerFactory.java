@@ -16,7 +16,7 @@
 
 package com.epam.reportportal.extension.template.event.plugin;
 
-import com.epam.reportportal.extension.event.PluginEvent;
+import com.epam.reportportal.core.events.domain.PluginUploadedEvent;
 import com.epam.reportportal.extension.template.event.EventHandlerFactory;
 import com.epam.reportportal.extension.template.event.handler.EventHandler;
 import com.epam.reportportal.extension.template.event.handler.plugin.PluginLoadedEventHandler;
@@ -28,11 +28,11 @@ import java.util.Map;
 /**
  * @author Andrei Piankouski
  */
-public class PluginEventHandlerFactory implements EventHandlerFactory<PluginEvent> {
+public class PluginEventHandlerFactory implements EventHandlerFactory<PluginUploadedEvent> {
 
   public static final String LOAD_KEY = "load";
 
-  private final Map<String, EventHandler<PluginEvent>> eventHandlerMapping;
+  private final Map<String, EventHandler<PluginUploadedEvent>> eventHandlerMapping;
 
   public PluginEventHandlerFactory(
       IntegrationTypeRepository integrationTypeRepository,
@@ -43,7 +43,7 @@ public class PluginEventHandlerFactory implements EventHandlerFactory<PluginEven
   }
 
   @Override
-  public EventHandler<PluginEvent> getEventHandler(String key) {
+  public EventHandler<PluginUploadedEvent> getEventHandler(String key) {
     return eventHandlerMapping.get(key);
   }
 }

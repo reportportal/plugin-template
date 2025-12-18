@@ -16,14 +16,13 @@
 
 package com.epam.reportportal.extension.template.command;
 
-import com.epam.reportportal.extension.PluginCommand;
-import com.epam.reportportal.infrastructure.persistence.entity.integration.Integration;
-import java.util.Map;
+import com.epam.reportportal.api.model.PluginCommandRQ;
+import com.epam.reportportal.extension.AdminContextCommand;
 
 /**
  * @author Andrei Piankouski
  */
-public class TemplateCommand implements PluginCommand<String> {
+public class TemplateCommand extends AdminContextCommand<String> {
 
   @Override
   public String getName() {
@@ -31,7 +30,7 @@ public class TemplateCommand implements PluginCommand<String> {
   }
 
   @Override
-  public String executeCommand(Integration integration, Map<String, Object> params) {
+  protected String invokeCommand(PluginCommandRQ pluginCommandRq) {
     return "TemplateCommand";
   }
 }

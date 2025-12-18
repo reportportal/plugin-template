@@ -16,7 +16,7 @@
 
 package com.epam.reportportal.extension.template.event.handler.plugin;
 
-import com.epam.reportportal.extension.event.PluginEvent;
+import com.epam.reportportal.core.events.domain.PluginUploadedEvent;
 import com.epam.reportportal.extension.template.event.handler.EventHandler;
 import com.epam.reportportal.infrastructure.persistence.dao.IntegrationRepository;
 import com.epam.reportportal.infrastructure.persistence.dao.IntegrationTypeRepository;
@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * @author Andrei Piankouski
  */
-public class PluginLoadedEventHandler implements EventHandler<PluginEvent> {
+public class PluginLoadedEventHandler implements EventHandler<PluginUploadedEvent> {
 
   private final IntegrationTypeRepository integrationTypeRepository;
   private final IntegrationRepository integrationRepository;
@@ -43,9 +43,9 @@ public class PluginLoadedEventHandler implements EventHandler<PluginEvent> {
   }
 
   @Override
-  public void handle(PluginEvent event) {
-    integrationTypeRepository.findByName(event.getPluginId())
-        .ifPresent(integrationType -> createIntegration(event.getPluginId(), integrationType));
+  public void handle(PluginUploadedEvent event) {
+    integrationTypeRepository.findByName(event.getPluginActivityResource().getName())
+        .ifPresent(integrationType -> createIntegration(event.getPluginActivityResource().getName(), integrationType));
   }
 
   private void createIntegration(String name, IntegrationType integrationType) {
