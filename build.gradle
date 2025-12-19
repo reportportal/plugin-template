@@ -4,6 +4,7 @@ plugins {
     id 'jacoco'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
     id "com.github.node-gradle.node" version "7.1.0"
+    id("io.freefair.lombok") version "9.1.0"
 }
 
 
@@ -36,23 +37,23 @@ repositories {
     }
 }
 
-dependencyManagement {
-    imports {
-        mavenBom("org.springframework.boot:spring-boot-dependencies:3.4.4")
-        mavenBom("com.epam.reportportal:commons-bom:5.13.2")
-    }
-}
-
 dependencies {
     if (releaseMode) {
-        implementation 'com.epam.reportportal:plugin-api'
-        annotationProcessor 'com.epam.reportportal:plugin-api'
+        implementation 'com.epam.reportportal:service-api'
+        annotationProcessor 'com.epam.reportportal:service-api'
     } else {
-        implementation 'com.epam.reportportal:plugin-api:5.12.0'
-        annotationProcessor 'com.epam.reportportal:plugin-api:5.12.0'
+        implementation 'com.github.reportportal:service-api:14b71bb'
+        annotationProcessor 'com.github.reportportal:service-api:14b71bb'
     }
 
-    implementation 'jakarta.annotation:jakarta.annotation-api:3.0.0'
+
+    // additional dependencies should be included in shadowJar section as well
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 test {
@@ -91,7 +92,7 @@ jar {
     }
     manifest {
         attributes(
-                "Class-Path": configurations.runtimeClasspath.collect { it.getName() }.join(' '),
+                "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(' '),
                 "Plugin-Class": "${pluginClass}",
                 "Plugin-Id": "${pluginId}",
                 "Plugin-Name": "${pluginName}",
@@ -117,9 +118,11 @@ shadowJar {
     from("ui/build") {
         into("/resources")
     }
-    configurations = [project.configurations.runtimeClasspath]
+    configurations = [project.configurations.compileClasspath]
     zip64 = true
     dependencies {
+        // example:
+        // include(dependency("org.apache.tomcat:tomcat-annotations-api:.*"))
     }
 }
 
@@ -129,7 +132,7 @@ tasks.register('plugin', Jar) { task ->
         with jar
     }
     into('lib') {
-        from configurations.runtimeClasspath
+        from configurations.compileClasspath
     }
     getArchiveExtension().set('zip')
 }
@@ -144,4 +147,3 @@ tasks.register('assemblePlugins', Copy) {
 }
 
 compileJava.dependsOn npm_run_build
-

@@ -1,26 +1,47 @@
-# Template plugin for Epam Report Portal
+# Template Plugin for ReportPortal
 
-## UI
+This is a template for creating a ReportPortal plugin.
 
-Install the dependencies: `npm install`
+## How to Implement a ReportPortal Plugin
 
-Build the UI source code: `npm run build`
+This guide provides step-by-step instructions on how to implement a Report Portal application plugin.
 
-## Extension template types
+### Prerequisites
 
-This template plugin has the following extension types:
+Make sure you have the following software installed:
 
-- `TemplatePluginExtension` - a simple extension with no listeners. Create a plugin with a information defined in the Manifest file via Gradle.
-- `TemplatePluginExtensionWithListener` - an extension with a listener. Use it if you need to create a plugin with a `load` listener. Create a default plugin integration.
+- JDK version 21
+- Gradle
 
-Pick one and delete an unnecessary file.
+### Step 1: Implement the plugin
 
-## Build the plugin
+This template uses an event-driven architecture. You can implement your custom logic by creating event handlers.
 
-Preconditions:
-- Install JDK version 11.
-- Specify version number in gradle.properties file.
+- **`TemplatePluginExtension`**: An extension that includes a listener for the `pluginLoaded` event. Use
+  this if you need to perform actions when the plugin is loaded, for example, creating a default integration.
 
-**Note:** Versions in the _develop_ branch are not release versions and must be postfixed with `NEXT_RELEASE_VERSION-SNAPSHOT-NUMBER_OF_BUILD (Example: 5.3.6-SNAPSHOT-1)`
+**Note:** If your plugin does not need to handle events, you can remove the event listener and the `DisposableBean`
+implementation from the `TemplatePluginExtension` class.
 
-Build the plugin: `gradlew build`
+### Step 2: Configure the plugin
+
+Modify the `gradle.properties` file to set the version number and other properties of your plugin.
+
+**Note:** Versions in branches other than the _main_ branch are not release versions and must be updated following the
+pattern: `NEXT_RELEASE_VERSION-SNAPSHOT-NUMBER_OF_BUILD`.
+(Example: `6.0.1-SNAPSHOT-1`)
+
+### Step 3: Build the plugin
+
+To build the plugin, run the following command in your terminal:
+
+`./gradlew build`
+
+This will generate a `.jar` file in the `build/libs` directory. This file is your plugin package.
+
+### Step 4: Deploy the plugin
+
+1. Navigate to the **Administrate** section in your ReportPortal instance.
+2. Go to the **Plugins** tab.
+3. Click on the **Upload** button and select the `.jar` file generated in the previous step.
+4. After the plugin is uploaded, it will appear in the list of plugins.
