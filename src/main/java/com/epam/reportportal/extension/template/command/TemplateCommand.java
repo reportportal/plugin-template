@@ -31,6 +31,6 @@ public class TemplateCommand extends AdminContextCommand<String> {
 
   @Override
   protected String invokeCommand(PluginCommandRQ pluginCommandRq) {
-    return "TemplateCommand";
+    return "success";
   }
 }
