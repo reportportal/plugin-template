@@ -18,8 +18,13 @@ package com.epam.reportportal.extension.template;
 
 import static com.epam.reportportal.extension.util.PluginManifestUtils.readPluginIdFromManifest;
 
-import com.epam.reportportal.core.events.domain.PluginDeletedEvent;
-import com.epam.reportportal.core.events.domain.PluginUploadedEvent;
+
+import com.epam.reportportal.base.core.events.domain.PluginDeletedEvent;
+import com.epam.reportportal.base.core.events.domain.PluginUploadedEvent;
+import com.epam.reportportal.base.infrastructure.persistence.dao.IntegrationRepository;
+import com.epam.reportportal.base.infrastructure.persistence.dao.IntegrationTypeRepository;
+import com.epam.reportportal.base.infrastructure.persistence.dao.organization.OrganizationRepositoryCustom;
+import com.epam.reportportal.base.infrastructure.persistence.dao.organization.OrganizationUserRepository;
 import com.epam.reportportal.extension.CommonPluginCommand;
 import com.epam.reportportal.extension.PluginCommand;
 import com.epam.reportportal.extension.ReportPortalExtensionPoint;
@@ -29,10 +34,6 @@ import com.epam.reportportal.extension.template.event.handler.PluginLoadedEventH
 import com.epam.reportportal.extension.template.event.listener.PluginDeletedEventListener;
 import com.epam.reportportal.extension.template.event.listener.PluginLoadedEventListener;
 import com.epam.reportportal.extension.template.utils.MemoizingSupplier;
-import com.epam.reportportal.infrastructure.persistence.dao.IntegrationRepository;
-import com.epam.reportportal.infrastructure.persistence.dao.IntegrationTypeRepository;
-import com.epam.reportportal.infrastructure.persistence.dao.organization.OrganizationRepositoryCustom;
-import com.epam.reportportal.infrastructure.persistence.dao.organization.OrganizationUserRepository;
 import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.ArrayList;
