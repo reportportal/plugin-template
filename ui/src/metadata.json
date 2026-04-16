@@ -2,10 +2,45 @@
   "scope": "plugin_name",
   "extensions": [
     {
-      "name": "plugin",
+      "name": "template",
+      "type": "uiExtension:adminPage",
+      "title": "Template plugin — instance admin (/plugin/template)",
+      "moduleName": "./instanceAdminPage"
+    },
+    {
+      "name": "instanceNav",
+      "type": "uiExtension:adminSidebarComponent",
+      "moduleName": "./instanceAdminSidebarNav"
+    },
+    {
+      "name": "orgSettingsTemplate",
+      "type": "uiExtension:organizationSettingsTab",
+      "title": "Template plugin — organization settings (tab: orgSettingsTemplate)",
+      "moduleName": "./organizationSettingsTab"
+    },
+    {
+      "name": "orgNav",
+      "type": "uiExtension:organizationSidebarComponent",
+      "moduleName": "./organizationSidebarNav",
+      "iconName": "orgNav"
+    },
+    {
+      "name": "projectSettingsTemplate",
       "type": "uiExtension:settingsTab",
-      "title": "Plugin",
-      "moduleName": "./moduleName"
+      "title": "Template plugin — project settings (tab: projectSettingsTemplate)",
+      "moduleName": "./projectSettingsTab"
+    },
+    {
+      "name": "template",
+      "type": "uiExtension:projectPage",
+      "title": "Template plugin — project page (/…/plugin/template)",
+      "moduleName": "./projectPage",
+      "slug": "template"
+    },
+    {
+      "name": "appNav",
+      "type": "uiExtension:sidebarComponent",
+      "moduleName": "./projectSidebarNav"
     }
   ]
 }

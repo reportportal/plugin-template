@@ -45,3 +45,5 @@ This will generate a `.jar` file in the `build/libs` directory. This file is you
 2. Go to the **Plugins** tab.
 3. Click on the **Upload** button and select the `.jar` file generated in the previous step.
 4. After the plugin is uploaded, it will appear in the list of plugins.
+
+Bundled UI (webpack, `metadata.json`, extension points): see [`ui/README.md`](ui/README.md).

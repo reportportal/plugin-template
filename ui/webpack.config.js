@@ -107,9 +107,22 @@ const config = {
           singleton: true,
           requiredVersion: pjson.dependencies['classnames'],
         },
+        'react-intl': {
+          singleton: true,
+          requiredVersion: pjson.dependencies['react-intl'],
+        },
       },
       exposes: {
-        './moduleName': './src/components/moduleName',
+        './instanceAdminPage': './src/components/instanceAdminPage/instanceAdminPage.tsx',
+        './instanceAdminSidebarNav':
+          './src/components/instanceAdminSidebarNav/instanceAdminSidebarNav.tsx',
+        './organizationSettingsTab':
+          './src/components/organizationSettingsTab/organizationSettingsTab.tsx',
+        './organizationSidebarNav':
+          './src/components/organizationSidebarNav/organizationSidebarNav.tsx',
+        './projectSettingsTab': './src/components/projectSettingsTab/projectSettingsTab.tsx',
+        './projectPage': './src/components/projectPage/projectPage.tsx',
+        './projectSidebarNav': './src/components/projectSidebarNav/projectSidebarNav.tsx',
       },
     }),
     new CopyPlugin({
