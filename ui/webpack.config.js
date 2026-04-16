@@ -56,6 +56,7 @@ const config = {
       constants: path.resolve(__dirname, 'src/constants'),
       icons: path.resolve(__dirname, 'src/icons'),
       hooks: path.resolve(__dirname, 'src/hooks'),
+      types: path.resolve(__dirname, 'src/types'),
       utils: path.resolve(__dirname, 'src/utils'),
       analyticsEvents: path.resolve(__dirname, 'src/analyticsEvents'),
     },
@@ -107,9 +108,20 @@ const config = {
           singleton: true,
           requiredVersion: pjson.dependencies['classnames'],
         },
+        'react-intl': {
+          singleton: true,
+          requiredVersion: pjson.dependencies['react-intl'],
+        },
       },
       exposes: {
-        './moduleName': './src/components/moduleName',
+        './instanceAdminPage': './src/components/instanceAdminPage/instanceAdminPage.tsx',
+        './instanceAdminSidebarNav':
+          './src/components/instanceAdminSidebarNav/instanceAdminSidebarNav.tsx',
+        './organizationSettingsTab':
+          './src/components/organizationSettingsTab/organizationSettingsTab.tsx',
+        './organizationSidebarNav':
+          './src/components/organizationSidebarNav/organizationSidebarNav.tsx',
+        './projectSettingsTab': './src/components/projectSettingsTab/projectSettingsTab.tsx',
       },
     }),
     new CopyPlugin({

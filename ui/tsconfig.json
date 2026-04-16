@@ -14,6 +14,8 @@
     "jsx": "react-jsx",
     "paths": {
       "*": ["node_modules/*"],
+      "hooks/*": ["src/hooks/*"],
+      "types/*": ["src/types/*"],
       "extensionProps/components": ["src/types/extensionProps/componentsTypes"],
       "extensionProps/common": ["src/types/extensionProps/common"],
       "extensionProps/utils": ["src/types/extensionProps/utilsTypes"],

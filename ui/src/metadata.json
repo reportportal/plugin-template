@@ -2,10 +2,41 @@
   "scope": "plugin_name",
   "extensions": [
     {
-      "name": "plugin",
+      "name": "template",
+      "type": "uiExtension:adminPage",
+      "title": "Template plugin — instance admin (/plugin/template)",
+      "moduleName": "./instanceAdminPage"
+    },
+    {
+      "name": "instanceNav",
+      "type": "uiExtension:adminSidebarComponent",
+      "moduleName": "./instanceAdminSidebarNav"
+    },
+    {
+      "name": "orgSettingsTemplate",
+      "type": "uiExtension:organizationSettingsTab",
+      "title": "Template plugin — organization settings (tab: orgSettingsTemplate)",
+      "moduleName": "./organizationSettingsTab"
+    },
+    {
+      "name": "orgNav",
+      "type": "uiExtension:organizationSidebarComponent",
+      "moduleName": "./organizationSidebarNav",
+      "iconName": "orgNav"
+    },
+    {
+      "name": "projectSettingsTemplate",
       "type": "uiExtension:settingsTab",
-      "title": "Plugin",
-      "moduleName": "./moduleName"
+      "title": "Template plugin — project settings (tab: projectSettingsTemplate)",
+      "moduleName": "./projectSettingsTab"
     }
-  ]
+  ],
+  "overrides": {
+    "disablePluginPopupContent": {
+      "en": "Disabling the Template plugin removes its demo screens and sidebar items from the instance, organization, and project UI.",
+      "ru": "После отключения плагина Template его демо-страницы и пункты меню пропадут на уровне инстанса, организации и проекта.",
+      "be": "Пасля адключэння плагіна Template яго дэма-старонкі і пункты меню знікнуць на ўзроўні інстанса, арганізацыі і праекта.",
+      "uk": "Після вимкнення плагіна Template його демо-екрани та пункти меню зникнуть на рівні інстансу, організації й проєкту."
+    }
+  }
 }
