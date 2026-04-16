@@ -1,8 +1,6 @@
+import { ExtensionPropsContext } from 'hooks/useExtensionProps';
 import { defineMessages, useIntl } from 'react-intl';
-
-import type { HostInjectedExtensionProps } from '../../types/hostExtensionProps';
-
-interface InstanceAdminPageProps extends HostInjectedExtensionProps {}
+import type { ExtensionProps } from 'types/extensionProps';
 
 const messages = defineMessages({
   title: {
@@ -19,10 +17,7 @@ const messages = defineMessages({
   },
 });
 
-const InstanceAdminPage = (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- props injected by host
-  props: InstanceAdminPageProps
-) => {
+const InstanceAdminPageContent = () => {
   const { formatMessage } = useIntl();
 
   return (
@@ -33,5 +28,11 @@ const InstanceAdminPage = (
     </section>
   );
 };
+
+const InstanceAdminPage = (props: ExtensionProps) => (
+  <ExtensionPropsContext.Provider value={props}>
+    <InstanceAdminPageContent />
+  </ExtensionPropsContext.Provider>
+);
 
 export default InstanceAdminPage;

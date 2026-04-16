@@ -63,7 +63,7 @@ You can add a top-level **`overrides`** object next to **`scope`** / **`extensio
 
 ### Extension props (injected by `service-ui`)
 
-Props are built in **`createImportProps`** and spread by **`FederatedExtensionLoader`** — see [`createImportProps.js`](https://github.com/reportportal/service-ui/blob/develop/app/src/controllers/plugins/uiExtensions/createImportProps.js) and [`federatedExtensionLoader.jsx`](https://github.com/reportportal/service-ui/blob/develop/app/src/components/extensionLoader/federatedExtensionLoader/federatedExtensionLoader.jsx). Placeholder page components are typed with **`HostInjectedExtensionProps`** ([`src/types/hostExtensionProps.ts`](src/types/hostExtensionProps.ts)) so `selectors`, `components`, `constants`, etc. match the host.
+Props are built in **`createImportProps`** and spread by **`FederatedExtensionLoader`** — see [`createImportProps.js`](https://github.com/reportportal/service-ui/blob/develop/app/src/controllers/plugins/uiExtensions/createImportProps.js) and [`federatedExtensionLoader.jsx`](https://github.com/reportportal/service-ui/blob/develop/app/src/components/extensionLoader/federatedExtensionLoader/federatedExtensionLoader.jsx). Placeholder page components are typed with **`ExtensionProps`** ([`src/types/extensionProps/index.ts`](src/types/extensionProps/index.ts)) so `selectors`, `components`, `constants`, etc. match the host.
 
 ### Plugin commands from the UI
 

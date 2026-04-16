@@ -1,8 +1,6 @@
+import { ExtensionPropsContext } from 'hooks/useExtensionProps';
 import { defineMessages, useIntl } from 'react-intl';
-
-import type { HostInjectedExtensionProps } from '../../types/hostExtensionProps';
-
-interface ProjectSettingsTabProps extends HostInjectedExtensionProps {}
+import type { ExtensionProps } from 'types/extensionProps';
 
 const messages = defineMessages({
   title: {
@@ -19,10 +17,7 @@ const messages = defineMessages({
   },
 });
 
-const ProjectSettingsTab = (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- props injected by host
-  props: ProjectSettingsTabProps
-) => {
+const ProjectSettingsTabContent = () => {
   const { formatMessage } = useIntl();
 
   return (
@@ -33,5 +28,11 @@ const ProjectSettingsTab = (
     </section>
   );
 };
+
+const ProjectSettingsTab = (props: ExtensionProps) => (
+  <ExtensionPropsContext.Provider value={props}>
+    <ProjectSettingsTabContent />
+  </ExtensionPropsContext.Provider>
+);
 
 export default ProjectSettingsTab;
