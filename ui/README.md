@@ -56,6 +56,10 @@ This template already wires several examples (names like `template`, `appNav` ar
 
 **When you rename routes or extension names**, search the repo for the old strings and update **`metadata.json`**, **`webpack.config.js` exposes**, and **navigation props** in the sidebar/settings components so they still match.
 
+### Optional `metadata.json` overrides
+
+You can add a top-level **`overrides`** object next to **`scope`** / **`extensions`**. This template includes **`overrides.disablePluginPopupContent`**: an object whose keys are **locale codes** (`en`, `ru`, `be`, `uk`, …) and values are the **body text** for the “disable plugin” confirmation when admins turn the plugin off. Remove **`overrides`** entirely if the host default wording is enough for your plugin.
+
 ### Extension props (injected by `service-ui`)
 
 Props are built in **`createImportProps`** and spread by **`FederatedExtensionLoader`** — see [`createImportProps.js`](https://github.com/reportportal/service-ui/blob/develop/app/src/controllers/plugins/uiExtensions/createImportProps.js) and [`federatedExtensionLoader.jsx`](https://github.com/reportportal/service-ui/blob/develop/app/src/components/extensionLoader/federatedExtensionLoader/federatedExtensionLoader.jsx). Placeholder page components are typed with **`HostInjectedExtensionProps`** ([`src/types/hostExtensionProps.ts`](src/types/hostExtensionProps.ts)) so `selectors`, `components`, `constants`, etc. match the host.

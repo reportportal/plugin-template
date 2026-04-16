@@ -42,5 +42,13 @@
       "type": "uiExtension:sidebarComponent",
       "moduleName": "./projectSidebarNav"
     }
-  ]
+  ],
+  "overrides": {
+    "disablePluginPopupContent": {
+      "en": "Disabling the Template plugin removes its demo screens and sidebar items from the instance, organization, and project UI.",
+      "ru": "После отключения плагина Template его демо-страницы и пункты меню пропадут на уровне инстанса, организации и проекта.",
+      "be": "Пасля адключэння плагіна Template яго дэма-старонкі і пункты меню знікнуць на ўзроўні інстанса, арганізацыі і праекта.",
+      "uk": "Після вимкнення плагіна Template його демо-екрани та пункти меню зникнуть на рівні інстансу, організації й проєкту."
+    }
+  }
 }
