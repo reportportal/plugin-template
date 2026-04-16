@@ -44,10 +44,9 @@ dependencies {
         implementation 'com.epam.reportportal:service-api'
         annotationProcessor 'com.epam.reportportal:service-api'
     } else {
-        implementation 'com.github.reportportal:service-api:14b71bb'
-        annotationProcessor 'com.github.reportportal:service-api:14b71bb'
+        implementation 'com.github.reportportal:service-api:e6a3e1a7e0'
+        annotationProcessor 'com.github.reportportal:service-api:e6a3e1a7e0'
     }
-
 
     // additional dependencies should be included in shadowJar section as well
 }

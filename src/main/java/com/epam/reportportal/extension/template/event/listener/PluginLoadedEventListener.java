@@ -16,7 +16,7 @@
 
 package com.epam.reportportal.extension.template.event.listener;
 
-import com.epam.reportportal.core.events.domain.PluginUploadedEvent;
+import com.epam.reportportal.base.core.events.domain.PluginUploadedEvent;
 import com.epam.reportportal.extension.template.event.handler.PluginLoadedEventHandler;
 import org.springframework.context.ApplicationListener;
 
