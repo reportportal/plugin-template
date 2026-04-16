@@ -121,8 +121,6 @@ const config = {
         './organizationSidebarNav':
           './src/components/organizationSidebarNav/organizationSidebarNav.tsx',
         './projectSettingsTab': './src/components/projectSettingsTab/projectSettingsTab.tsx',
-        './projectPage': './src/components/projectPage/projectPage.tsx',
-        './projectSidebarNav': './src/components/projectSidebarNav/projectSidebarNav.tsx',
       },
     }),
     new CopyPlugin({

@@ -26,6 +26,8 @@ Build the UI source code: `npm run build`
 
 **How UI plugin works** (need to be updated): [UI plugin docs](https://github.com/reportportal/service-ui/blob/master/docs/14-plugins.md).
 
+**Plugins admin screen vs this `ui/` bundle:** the page **Administrate → Plugins → (your plugin)** (description, **Add integration**, etc.) is rendered by **ReportPortal host UI**, not by the federated components in this folder. A “stub” or extra layout **here** does not remove or replace that block. To hide integrations there, use **`isIntegrationsAllowed`** in **`gradle.properties`** (becomes plugin manifest metadata for the API), or customize **service-ui**.
+
 ## Build the plugin
 
 Preconditions:
@@ -46,14 +48,13 @@ ReportPortal opens your plugin UI in fixed **places** (instance admin, project s
 2. Point **`webpack.config.js` → `exposes`** to the **`.tsx`** file that renders that screen or widget.
 3. In that file, use **`export default`** for the root component (the host loads extensions like a lazy-loaded module and expects a default export).
 
-This template already wires several examples (names like `template`, `appNav` are **placeholders** — change them when you fork, but keep the same idea).
+This template already wires several examples (names like `template` are **placeholders** — change them when you fork, but keep the same idea).
 
 **Rough map** (details stay in `metadata.json` and the matching components under `src/components/`):
 
 - **Instance admin** — full page under `/plugin/...` and optional **sidebar** item that links to it.
 - **Organization** — a **settings tab** and/or a **sidebar** shortcut (there is no separate “org plugin URL” like the project full page; use the org tab + sidebar).
-- **Project** — **settings tab**, **full plugin page** (own URL segment), and **sidebar** entry (see `projectSidebarNav.tsx` for how the sidebar opens the project page).
-
+- **Project** — **settings tab**.
 **When you rename routes or extension names**, search the repo for the old strings and update **`metadata.json`**, **`webpack.config.js` exposes**, and **navigation props** in the sidebar/settings components so they still match.
 
 ### Optional `metadata.json` overrides

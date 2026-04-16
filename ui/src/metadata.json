@@ -29,18 +29,6 @@
       "type": "uiExtension:settingsTab",
       "title": "Template plugin — project settings (tab: projectSettingsTemplate)",
       "moduleName": "./projectSettingsTab"
-    },
-    {
-      "name": "template",
-      "type": "uiExtension:projectPage",
-      "title": "Template plugin — project page (/…/plugin/template)",
-      "moduleName": "./projectPage",
-      "slug": "template"
-    },
-    {
-      "name": "appNav",
-      "type": "uiExtension:sidebarComponent",
-      "moduleName": "./projectSidebarNav"
     }
   ],
   "overrides": {
