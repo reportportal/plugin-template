@@ -13,6 +13,8 @@ npm run dev # Run webpack in dev watch mode
 npm run start # Serve built files
 ```
 
+**Option 1** — override via browser console (resets on page reload):
+
 _Available only from RP v24.1_: use
 ```javascript
 window.RP.overrideExtension(pluginName, url);
@@ -21,6 +23,19 @@ function call in browser to override the plugin UI assets in favor of your local
 ```javascript
 window.RP.overrideExtension('plugin name', 'http://localhost:9090');
 ```
+
+**Option 2** — override via service-ui webpack proxy (persists across reloads):
+
+In `service-ui/app/webpack/dev.config.js`, add the following entry **before** the existing `/api/` proxy rule:
+```javascript
+{
+  context: ['/api/v1/plugin/public/{pluginName}/'],
+  target: 'http://localhost:9090',
+  changeOrigin: true,
+  pathRewrite: { '^/api/v1/plugin/public/{pluginName}/file': '' },
+},
+```
+Replace `{pluginName}` with the actual plugin name. Then restart the service-ui dev server. All plugin file requests will be redirected to your local dev server on port 9090.
 
 Build the UI source code: `npm run build`
 
