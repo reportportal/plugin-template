@@ -24,3 +24,26 @@ Preconditions:
 **Note:** Versions in the _develop_ branch are not release versions and must be postfixed with `NEXT_RELEASE_VERSION-SNAPSHOT-NUMBER_OF_BUILD (Example: 5.3.6-SNAPSHOT-1)`
 
 Build the plugin: `gradlew build`
+
+## Sensitive integration parameters
+
+The following integration parameter names are automatically encrypted by service-api before persisting:
+
+- `password`
+- `oauthAccessKey`
+- `apiToken`
+- `apiKey`
+- `accessToken`
+- `managerPassword`
+- `clientSecret`
+- `passwordAttribute`
+
+If your plugin reads any of these params from `Integration.getParams()`, decrypt the value using the injected `BasicTextEncryptor` before use:
+
+```java
+@Autowired
+private BasicTextEncryptor encryptor;
+
+String raw = integration.getParams().getParams().get("password");
+String plain = encryptor.decrypt(raw);
+```
