@@ -47,3 +47,26 @@ This will generate a `.jar` file in the `build/libs` directory. This file is you
 4. After the plugin is uploaded, it will appear in the list of plugins.
 
 Bundled UI (webpack, `metadata.json`, extension points): see [`ui/README.md`](ui/README.md).
+
+## Sensitive integration parameters
+
+The following integration parameter names are automatically encrypted by service-api before persisting:
+
+- `password`
+- `oauthAccessKey`
+- `apiToken`
+- `apiKey`
+- `accessToken`
+- `managerPassword`
+- `clientSecret`
+- `passwordAttribute`
+
+If your plugin reads any of these params from `Integration.getParams()`, decrypt the value using the injected `BasicTextEncryptor` before use:
+
+```java
+@Autowired
+private BasicTextEncryptor encryptor;
+
+String raw = integration.getParams().getParams().get("password");
+String plain = encryptor.decrypt(raw);
+```
