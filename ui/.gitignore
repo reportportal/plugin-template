@@ -1,3 +1,6 @@
 node_modules/
 build/
 npm-v*/
+# Reference catalog fully derived from code by `formatjs extract`; mirrors
+# service-ui's `localization/translated/en.json` (also gitignored, also regenerated).
+src/locales/en.json

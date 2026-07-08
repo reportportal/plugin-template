@@ -9,6 +9,9 @@
     "eslint": "eslint \"./**/*.tsx\" \"./**/*.ts\"",
     "lint": "npm run eslint",
     "format": "npm run eslint -- --fix",
+    "extract:translations": "formatjs extract \"src/**/*.{ts,tsx}\" --ignore \"**/*.d.ts\" --out-file src/locales/en.json --id-interpolation-pattern \"[sha512:contenthash:base64:6]\"",
+    "merge:translations": "node localization/mergeTranslations.js",
+    "manage:translations": "npm run extract:translations && npm run merge:translations",
     "precommit": "lint-staged",
     "postcommit": "git update-index --again"
   },
@@ -26,6 +29,7 @@
     "redux-form": "8.3.10"
   },
   "devDependencies": {
+    "@formatjs/cli": "^6.16.11",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",

@@ -1,0 +1,14 @@
+{
+  "PluginTemplate.instanceAdmin.body": "Замените на ваш UI уровня инстанса.",
+  "PluginTemplate.instanceAdmin.lead": "Админка инстанса · сегмент маршрута «template» · MF scope/имя плагина: plugin_name",
+  "PluginTemplate.instanceAdmin.title": "Плагин Template — администрирование инстанса",
+  "PluginTemplate.instanceNav.label": "Плагин Template — админка инстанса",
+  "PluginTemplate.orgNav.label": "Плагин Template — настройки организации",
+  "PluginTemplate.orgSettings.body": "Замените на UI уровня организации.",
+  "PluginTemplate.orgSettings.lead": "Id вкладки orgSettingsTemplate — сайдбар организации должен использовать тот же settingsTab.",
+  "PluginTemplate.orgSettings.title": "Плагин Template — настройки организации",
+  "PluginTemplate.projectSettings.body": "Замените на настройки плагина уровня проекта.",
+  "PluginTemplate.projectSettings.lead": "Id вкладки projectSettingsTemplate (general зарезервирован RP).",
+  "PluginTemplate.projectSettings.note": "Эти строки поставляются в артефакте плагина и объединяются в рантайме.",
+  "PluginTemplate.projectSettings.title": "Плагин Template — настройки проекта"
+}

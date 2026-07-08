@@ -15,6 +15,10 @@ const messages = defineMessages({
     id: 'PluginTemplate.projectSettings.body',
     defaultMessage: 'Replace with per-project plugin settings.',
   },
+  note: {
+    id: 'PluginTemplate.projectSettings.note',
+    defaultMessage: 'These strings are shipped with the plugin artifact and merged at runtime.',
+  },
 });
 
 const ProjectSettingsTabContent = () => {
@@ -25,6 +29,7 @@ const ProjectSettingsTabContent = () => {
       <h1>{formatMessage(messages.title)}</h1>
       <p>{formatMessage(messages.lead)}</p>
       <p>{formatMessage(messages.body)}</p>
+      <p>{formatMessage(messages.note)}</p>
     </section>
   );
 };

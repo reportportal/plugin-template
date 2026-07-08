@@ -128,6 +128,11 @@ const config = {
       patterns: [
         { from: path.resolve(__dirname, './src/metadata.json') },
         { from: path.resolve(__dirname, './src/plugin-icon.svg') },
+        {
+          from: path.resolve(__dirname, './src/locales'),
+          to: 'locale-[name][ext]',
+          globOptions: { ignore: ['**/en.json'] },
+        },
       ],
     }),
   ],
