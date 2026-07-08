@@ -1,5 +1,8 @@
 {
   "scope": "plugin_name",
+  "localization": {
+    "messages": "locale-{lang}.json"
+  },
   "extensions": [
     {
       "name": "template",

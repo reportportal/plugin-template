@@ -72,6 +72,89 @@ This template already wires several examples (names like `template` are **placeh
 - **Project** — **settings tab**.
 **When you rename routes or extension names**, search the repo for the old strings and update **`metadata.json`**, **`webpack.config.js` exposes**, and **navigation props** in the sidebar/settings components so they still match.
 
+### Localization (translations shipped with the plugin)
+
+Plugin translations live in the plugin artifact and are merged into ReportPortal at
+runtime. The host reads the manifest, fetches `locale-{lang}.json` from the same base
+URL as the MF entry, and merges it over the core catalog. The workflow mirrors
+`service-ui`'s exactly (extract reference catalog → merge per-language files → commit →
+ship as-is, no build-time transform), using the official
+[FormatJS CLI](https://formatjs.github.io/docs/tooling/cli/) (`@formatjs/cli`) for
+extraction.
+
+**Pipeline** (`npm run manage:translations`, run whenever you add/change strings):
+
+```
+defineMessages (code)
+  │  formatjs extract
+  ▼
+src/locales/en.json            — reference catalog, git-ignored, always regenerated
+  │  localization/mergeTranslations.js
+  ▼
+src/locales/{ru,uk,be,zh,es}.json  — flat id→string, in git; this IS the runtime shape,
+                                      no further transform — missing ids added with the
+                                      English text, obsolete ids removed, ids still equal
+                                      to the English text reported as untranslated
+  │  (translator replaces the English placeholder text by hand)
+  ▼  webpack CopyPlugin (straight copy + rename, no transform)
+build/public/locale-{lang}.json
+```
+
+This matches `service-ui/app/localization/` (`webpack extract` →
+`react-intl-translations-manager` merge → committed `ru/uk/be/zh/es.json` → consumed
+as-is by `IntlProvider`, see `messages={this.props.messages}` in
+`localizationContainer.jsx`) almost exactly — `service-ui` has no separate
+compile/validation step either, and the committed files there are the literal runtime
+shape too. The only difference is the last hop: a plugin ships its locales as static
+files fetched at runtime instead of bundling them into the host's own JS, so
+`webpack.config.js` copies them into `build/public/` instead of `import`-ing them.
+
+**Wiring in this template:**
+
+1. **`src/metadata.json`** declares the contract:
+   ```json
+   "localization": { "messages": "locale-{lang}.json" }
+   ```
+   Without this section the plugin stays on core strings + `defaultMessage` (legacy, still works).
+2. **`src/locales/en.json`** is the extract output (nested `{id: {defaultMessage}}` shape).
+   It is **git-ignored** (like `service-ui`'s `localization/translated/en.json`) — fully
+   derived from code, never hand-edited, and never shipped: it exists only so
+   `mergeTranslations.js` knows which ids and English texts should exist.
+3. **`src/locales/{ru,uk,be,zh,es}.json`** hold translations as a flat `id -> string` map,
+   editable by hand or any TMS that supports flat JSON (Localizely, POEditor, BabelEdit,
+   …). A key that hasn't been translated yet holds the literal English `defaultMessage`
+   text (not an empty string) — see `merge:translations` below — so the file is always
+   valid, readable English until a translator changes it.
+4. **`webpack.config.js`** copies `src/locales/*.json` into `build/public/` as flat
+   `locale-{lang}.json` (next to `metadata.json`); `en.json` is excluded — it's the
+   extract reference, not a runtime file.
+5. **Message ids** use a plugin namespace prefix (here `PluginTemplate.*`). The prefix only
+   needs to be unique; it does **not** have to equal your `pluginId`.
+
+**Workflow:**
+
+1. Add strings with `defineMessages` + `defaultMessage` (English) and `formatMessage`.
+2. Run `npm run manage:translations`:
+   - `extract:translations` (`formatjs extract`) — regenerates `src/locales/en.json` from
+     code, so ids never drift from what's in `defineMessages`;
+   - `merge:translations` (`localization/mergeTranslations.js`) — adds new/missing ids to
+     every `src/locales/{lang}.json` filled with the English `defaultMessage` (a key is
+     "untranslated" when its stored text still equals the English one), removes ids no
+     longer in code, and logs both lists. `formatjs verify --missing-keys --extra-keys`
+     can detect the same drift, but only reports it (non-zero exit) instead of writing the
+     fix — this script plays the same role `react-intl-translations-manager` plays in
+     `service-ui` (same add/remove/report algorithm, ported to the flat format; there is
+     no official FormatJS command that writes/fixes translation files, only ones that
+     extract, transform, or report).
+3. Translate the reported ids by hand (or via a TMS) and commit the changed
+   `src/locales/*.json` files (not `en.json`).
+4. `npm run build` / `npm run dev` — no translation step runs automatically (same as
+   `service-ui`'s plain `webpack` build): commit up-to-date `src/locales/*.json` files
+   before building, `webpack.config.js` just copies them into `build/public/locale-*.json`.
+
+**Local check:** `window.RP.overrideExtension('template', 'http://localhost:9090')` — code and
+locales are then served from the same dev origin; switch app language to see the merge.
+
 ### Optional `metadata.json` overrides
 
 You can add a top-level **`overrides`** object next to **`scope`** / **`extensions`**. This template includes **`overrides.disablePluginPopupContent`**: an object whose keys are **locale codes** (`en`, `ru`, `be`, `uk`, …) and values are the **body text** for the “disable plugin” confirmation when admins turn the plugin off. Remove **`overrides`** entirely if the host default wording is enough for your plugin.
