@@ -10,7 +10,7 @@ This guide provides step-by-step instructions on how to implement a Report Porta
 
 Make sure you have the following software installed:
 
-- JDK version 21
+- JDK version 25
 - Gradle
 
 ### Step 1: Implement the plugin

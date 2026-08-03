@@ -44,7 +44,8 @@ public class PluginLoadedEventHandler implements EventHandler<PluginUploadedEven
   @Override
   public void handle(PluginUploadedEvent event) {
     integrationTypeRepository.findByName(event.getPluginActivityResource().getName())
-        .ifPresent(integrationType -> createIntegration(event.getPluginActivityResource().getName(), integrationType));
+    //.ifPresent(integrationType -> createIntegration(event.getPluginActivityResource().getName(), integrationType))
+    ;
   }
 
   private void createIntegration(String name, IntegrationType integrationType) {
