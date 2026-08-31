@@ -5,7 +5,7 @@ import com.epam.reportportal.extension.PluginCommand;
 import com.epam.reportportal.extension.ReportPortalExtensionPoint;
 import com.epam.reportportal.extension.template.command.TemplateCommand;
 import com.epam.reportportal.extension.template.utils.MemoizingSupplier;
-import com.epam.ta.reportportal.dao.LogRepository;
+import com.epam.reportportal.base.infrastructure.persistence.dao.LogRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
