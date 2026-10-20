@@ -1,0 +1,14 @@
+{
+  "PluginTemplate.instanceAdmin.body": "Replace with your instance-level UI.",
+  "PluginTemplate.instanceAdmin.lead": "Instance admin · route segment \"template\" · MF scope/plugin name: plugin_name",
+  "PluginTemplate.instanceAdmin.title": "Template plugin — instance administration",
+  "PluginTemplate.instanceNav.label": "Template plugin — instance admin",
+  "PluginTemplate.orgNav.label": "Template plugin — organization settings",
+  "PluginTemplate.orgSettings.body": "Replace with organization-wide UI.",
+  "PluginTemplate.orgSettings.lead": "Tab id orgSettingsTemplate — org sidebar must use the same settingsTab.",
+  "PluginTemplate.orgSettings.title": "Template plugin — organization settings",
+  "PluginTemplate.projectSettings.body": "Replace with per-project plugin settings.",
+  "PluginTemplate.projectSettings.lead": "Tab id projectSettingsTemplate (general is reserved by RP).",
+  "PluginTemplate.projectSettings.note": "These strings are shipped with the plugin artifact and merged at runtime.",
+  "PluginTemplate.projectSettings.title": "Template plugin — project settings"
+}

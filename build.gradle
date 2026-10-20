@@ -2,8 +2,9 @@ plugins {
     id "io.spring.dependency-management" version "1.1.7"
     id 'java'
     id 'jacoco'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'com.gradleup.shadow' version '9.6.1'
     id "com.github.node-gradle.node" version "7.1.0"
+    id("io.freefair.lombok") version "9.8.2"
 }
 
 
@@ -34,25 +35,26 @@ repositories {
             url = 'https://jitpack.io'
         }
     }
-}
+    maven { url  "https://build.shibboleth.net/nexus/content/repositories/releases/" }
 
-dependencyManagement {
-    imports {
-        mavenBom("org.springframework.boot:spring-boot-dependencies:3.4.4")
-        mavenBom("com.epam.reportportal:commons-bom:5.13.2")
-    }
 }
 
 dependencies {
     if (releaseMode) {
-        implementation 'com.epam.reportportal:plugin-api'
-        annotationProcessor 'com.epam.reportportal:plugin-api'
+        implementation 'com.epam.reportportal:service-api'
+        annotationProcessor 'com.epam.reportportal:service-api'
     } else {
-        implementation 'com.epam.reportportal:plugin-api:5.12.0'
-        annotationProcessor 'com.epam.reportportal:plugin-api:5.12.0'
+        implementation 'com.github.reportportal:service-api:9fe6be0'
+        annotationProcessor 'com.github.reportportal:service-api:9fe6be0'
     }
 
-    implementation 'jakarta.annotation:jakarta.annotation-api:3.0.0'
+    // additional dependencies should be included in shadowJar section as well
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
 }
 
 test {
@@ -91,7 +93,7 @@ jar {
     }
     manifest {
         attributes(
-                "Class-Path": configurations.runtimeClasspath.collect { it.getName() }.join(' '),
+                "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(' '),
                 "Plugin-Class": "${pluginClass}",
                 "Plugin-Id": "${pluginId}",
                 "Plugin-Name": "${pluginName}",
@@ -104,6 +106,7 @@ jar {
                 "Plugin-Metadata-embedded": "${isEmbedded}",
                 "Plugin-Metadata-isMultiple": "${isMultiple}",
                 "Plugin-Binary-Data-main": "${mainBinaryData}",
+                "Plugin-Binary-Data-metadata": "${metadataBinaryData}",
                 "Plugin-Metadata-yourAdditionalMetadata": "${yourAdditionalMetadata}",
                 "Plugin-Property-yourAdditionalProperty": "${yourAdditionalProperty}",
         )
@@ -117,9 +120,12 @@ shadowJar {
     from("ui/build") {
         into("/resources")
     }
-    configurations = [project.configurations.runtimeClasspath]
+    configurations = [project.configurations.compileClasspath]
     zip64 = true
+    minimize()
     dependencies {
+        // example:
+        // include(dependency("org.apache.tomcat:tomcat-annotations-api:.*"))
     }
 }
 
@@ -129,7 +135,7 @@ tasks.register('plugin', Jar) { task ->
         with jar
     }
     into('lib') {
-        from configurations.runtimeClasspath
+        from configurations.compileClasspath
     }
     getArchiveExtension().set('zip')
 }
@@ -145,3 +151,4 @@ tasks.register('assemblePlugins', Copy) {
 
 compileJava.dependsOn npm_run_build
 
+javadoc.enabled = false
