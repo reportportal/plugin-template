@@ -1,20 +1,24 @@
 const http = require('http');
-const staticServer = require('node-static');
+const path = require('path');
+const sirv = require('sirv');
 
-const contentPath = './build/public';
-const headers = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': '*',
-  'Access-Control-Allow-Headers': '*',
-  'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
-};
-const file = new staticServer.Server(contentPath, { headers });
+const contentPath = path.join(__dirname, 'build/public');
+const assets = sirv(contentPath, {
+  dev: true,
+  maxAge: 0,
+  setHeaders: (res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  },
+});
 
-http
-  .createServer((req, res) => {
-    console.log(`Request URL: ${req.url}`);
-    file.serve(req, res);
-  })
-  .listen(9090, () => {
-    console.log(`Serving files from ${contentPath}`);
+const server = http.createServer((req, res) => {
+  console.log(`Request URL: ${req.url}`);
+  assets(req, res, () => {
+    res.statusCode = 404;
+    res.end('Not found');
   });
+});
+
+server.listen(9090, () => {
+  console.log(`Serving files from ${contentPath}`);
+});

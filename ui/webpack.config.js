@@ -66,6 +66,7 @@ const config = {
     new ForkTsCheckerWebpackPlugin(),
     new ESLintWebpackPlugin({
       context: './src',
+      configType: 'eslintrc',
       extensions: ['.scss', '.css', '.ts', '.tsx'],
       threads: true,
     }),
