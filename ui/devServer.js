@@ -1,5 +1,5 @@
 const http = require('http');
-const staticServer = require('node-static');
+const sirv = require('sirv');
 
 const contentPath = './build/public';
 const headers = {
@@ -8,12 +8,17 @@ const headers = {
   'Access-Control-Allow-Headers': '*',
   'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
 };
-const file = new staticServer.Server(contentPath, { headers });
+const serve = sirv(contentPath, {
+  dev: true,
+  setHeaders: (res) => {
+    Object.entries(headers).forEach(([name, value]) => res.setHeader(name, value));
+  },
+});
 
 http
   .createServer((req, res) => {
     console.log(`Request URL: ${req.url}`);
-    file.serve(req, res);
+    serve(req, res);
   })
   .listen(9090, () => {
     console.log(`Serving files from ${contentPath}`);
