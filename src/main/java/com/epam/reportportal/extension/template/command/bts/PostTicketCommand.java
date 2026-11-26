@@ -37,9 +37,9 @@ import com.epam.reportportal.base.infrastructure.persistence.entity.user.UserRol
 import com.epam.reportportal.extension.command.AbstractExtensionCommand;
 import com.epam.reportportal.extension.util.RequestEntityConverter;
 import com.epam.reportportal.extension.util.RequestEntityValidator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * @author <a href="mailto:pavel_bortnik@epam.com">Pavel Bortnik</a>
@@ -48,14 +48,14 @@ import lombok.extern.slf4j.Slf4j;
 public class PostTicketCommand extends AbstractExtensionCommand<Ticket> {
 
   private final RequestEntityConverter requestEntityConverter;
-  private final ObjectMapper objectMapper;
+  private final JsonMapper objectMapper;
 
   public PostTicketCommand(ProjectRepository projectRepository,
-      RequestEntityConverter requestEntityConverter,
-      OrganizationUserRepository organizationUserRepository,
-      OrganizationRepository organizationRepository,
-      ProjectUserRepository projectUserRepository,
-      ObjectMapper objectMapper) {
+    RequestEntityConverter requestEntityConverter,
+    OrganizationUserRepository organizationUserRepository,
+    OrganizationRepository organizationRepository,
+    ProjectUserRepository projectUserRepository,
+    JsonMapper objectMapper) {
     super(projectRepository, organizationUserRepository, organizationRepository, projectUserRepository);
     this.requestEntityConverter = requestEntityConverter;
     this.objectMapper = objectMapper;
@@ -79,7 +79,7 @@ public class PostTicketCommand extends AbstractExtensionCommand<Ticket> {
     List<PostFormField> fields = ticketRQ.getFields();
 
     expect(fields, not(isNull()))
-        .verify(UNABLE_INTERACT_WITH_INTEGRATION, "External System fields set is empty!");
+      .verify(UNABLE_INTERACT_WITH_INTEGRATION, "External System fields set is empty!");
 
     // TODO: implement BTS ticket creation
 

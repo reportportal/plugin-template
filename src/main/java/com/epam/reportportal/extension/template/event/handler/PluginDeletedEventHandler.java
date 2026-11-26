@@ -18,19 +18,8 @@ package com.epam.reportportal.extension.template.event.handler;
 
 
 import com.epam.reportportal.base.core.events.domain.PluginDeletedEvent;
-import com.epam.reportportal.base.infrastructure.persistence.dao.IntegrationRepository;
-import com.epam.reportportal.base.infrastructure.persistence.dao.IntegrationTypeRepository;
 
 public class PluginDeletedEventHandler implements EventHandler<PluginDeletedEvent> {
-
-  private final IntegrationTypeRepository integrationTypeRepository;
-  private final IntegrationRepository integrationRepository;
-
-  public PluginDeletedEventHandler(IntegrationTypeRepository integrationTypeRepository,
-      IntegrationRepository integrationRepository) {
-    this.integrationTypeRepository = integrationTypeRepository;
-    this.integrationRepository = integrationRepository;
-  }
 
   @Override
   public void handle(PluginDeletedEvent event) {

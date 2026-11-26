@@ -31,8 +31,8 @@ import com.epam.reportportal.base.infrastructure.rules.exception.ErrorType;
 import com.epam.reportportal.base.infrastructure.rules.exception.ReportPortalException;
 import com.epam.reportportal.extension.command.AbstractExtensionCommand;
 import com.epam.reportportal.extension.template.model.BtsRqProperties;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Optional;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * @author <a href="mailto:pavel_bortnik@epam.com">Pavel Bortnik</a>
@@ -44,15 +44,15 @@ public class GetIssueCommand extends AbstractExtensionCommand<Ticket> {
 
   private final TicketRepository ticketRepository;
   private final IntegrationRepository integrationRepository;
-  private final ObjectMapper objectMapper;
+  private final JsonMapper objectMapper;
 
   public GetIssueCommand(TicketRepository ticketRepository,
-      IntegrationRepository integrationRepository,
-      ProjectRepository projectRepository,
-      OrganizationUserRepository organizationUserRepository,
-      OrganizationRepository organizationRepository,
-      ProjectUserRepository projectUserRepository,
-      ObjectMapper objectMapper) {
+    IntegrationRepository integrationRepository,
+    ProjectRepository projectRepository,
+    OrganizationUserRepository organizationUserRepository,
+    OrganizationRepository organizationRepository,
+    ProjectUserRepository projectUserRepository,
+    JsonMapper objectMapper) {
     super(projectRepository, organizationUserRepository, organizationRepository, projectUserRepository);
     this.ticketRepository = ticketRepository;
     this.integrationRepository = integrationRepository;
@@ -74,8 +74,8 @@ public class GetIssueCommand extends AbstractExtensionCommand<Ticket> {
     var params = pluginCommandRq.getArguments();
 
     var ticketId = Optional.ofNullable(params.get(TICKET_ID))
-        .map(String::valueOf)
-        .orElseThrow(() -> new ReportPortalException(ErrorType.BAD_REQUEST_ERROR, TICKET_ID + "  must be provided"));
+      .map(String::valueOf)
+      .orElseThrow(() -> new ReportPortalException(ErrorType.BAD_REQUEST_ERROR, TICKET_ID + "  must be provided"));
 
     /* Optional
     var ticket = ticketRepository.findByTicketId(ticketId)
@@ -83,18 +83,18 @@ public class GetIssueCommand extends AbstractExtensionCommand<Ticket> {
             () -> new ReportPortalException(ErrorType.BAD_REQUEST_ERROR, "Ticket not found with id " + TICKET_ID));
     */
     var projectId = (Long) Optional.ofNullable(params.get(PROJECT_ID))
-        .orElseThrow(() -> new ReportPortalException(ErrorType.BAD_REQUEST_ERROR, PROJECT_ID + " must be provided"));
+      .orElseThrow(() -> new ReportPortalException(ErrorType.BAD_REQUEST_ERROR, PROJECT_ID + " must be provided"));
     var btsUrl = BtsRqProperties.URL.getParam(params)
-        .orElseThrow(
-            () -> new ReportPortalException(ErrorType.UNABLE_INTERACT_WITH_INTEGRATION, "Url is not specified."));
+      .orElseThrow(
+        () -> new ReportPortalException(ErrorType.UNABLE_INTERACT_WITH_INTEGRATION, "Url is not specified."));
     var btsProject = BtsRqProperties.PROJECT.getParam(params)
-        .orElseThrow(
-            () -> new ReportPortalException(ErrorType.UNABLE_INTERACT_WITH_INTEGRATION, "Project is not specified."));
+      .orElseThrow(
+        () -> new ReportPortalException(ErrorType.UNABLE_INTERACT_WITH_INTEGRATION, "Project is not specified."));
 
     var integration = integrationRepository.findProjectBtsByUrlAndLinkedProject(btsUrl, btsProject, projectId)
-        .orElseGet(() -> integrationRepository.findGlobalBtsByUrlAndLinkedProject(btsUrl, btsProject)
-            .orElseThrow(() -> new ReportPortalException(ErrorType.BAD_REQUEST_ERROR,
-                "Integration with provided url and project isn't found")));
+      .orElseGet(() -> integrationRepository.findGlobalBtsByUrlAndLinkedProject(btsUrl, btsProject)
+        .orElseThrow(() -> new ReportPortalException(ErrorType.BAD_REQUEST_ERROR,
+          "Integration with provided url and project isn't found")));
 
     return new Ticket();
   }
