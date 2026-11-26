@@ -26,7 +26,6 @@ import com.epam.reportportal.base.infrastructure.persistence.dao.ProjectReposito
 import com.epam.reportportal.base.infrastructure.persistence.dao.ProjectUserRepository;
 import com.epam.reportportal.base.infrastructure.persistence.dao.TicketRepository;
 import com.epam.reportportal.base.infrastructure.persistence.dao.organization.OrganizationRepository;
-import com.epam.reportportal.base.infrastructure.persistence.dao.organization.OrganizationRepositoryCustom;
 import com.epam.reportportal.base.infrastructure.persistence.dao.organization.OrganizationUserRepository;
 import com.epam.reportportal.extension.CommonPluginCommand;
 import com.epam.reportportal.extension.PluginCommand;
@@ -43,7 +42,6 @@ import com.epam.reportportal.extension.template.event.listener.PluginDeletedEven
 import com.epam.reportportal.extension.template.event.listener.PluginLoadedEventListener;
 import com.epam.reportportal.extension.util.MemoizingSupplier;
 import com.epam.reportportal.extension.util.RequestEntityConverter;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -65,6 +63,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Use this extension if you need to handle events and create a default integration.
@@ -103,8 +102,6 @@ public class TemplatePluginExtension implements ReportPortalExtensionPoint, Disp
   @Autowired
   private IntegrationRepository integrationRepository;
   @Autowired
-  private OrganizationRepositoryCustom organizationRepositoryCustom;
-  @Autowired
   private OrganizationRepository organizationRepository;
   @Autowired
   private OrganizationUserRepository organizationUserRepository;
@@ -119,7 +116,7 @@ public class TemplatePluginExtension implements ReportPortalExtensionPoint, Disp
 
   @Autowired
   @Lazy
-  private ObjectMapper objectMapper;
+  private JsonMapper objectMapper;
 
 
   /**
@@ -136,8 +133,7 @@ public class TemplatePluginExtension implements ReportPortalExtensionPoint, Disp
       pluginId, new PluginLoadedEventHandler(integrationTypeRepository, integrationRepository)
     ));
     pluginDeletedListener = new MemoizingSupplier<>(() -> new PluginDeletedEventListener(
-      pluginId,
-      new PluginDeletedEventHandler(integrationTypeRepository, integrationRepository)
+      pluginId, new PluginDeletedEventHandler()
     ));
   }
 
@@ -233,7 +229,7 @@ public class TemplatePluginExtension implements ReportPortalExtensionPoint, Disp
    * @return The corresponding CommonPluginCommand, or null if not found.
    */
   @Override
-  @Deprecated(forRemoval = true)
+  @Deprecated
   public CommonPluginCommand<?> getCommonCommand(String commandName) {
     return null;
   }
@@ -245,7 +241,7 @@ public class TemplatePluginExtension implements ReportPortalExtensionPoint, Disp
    * @return The corresponding PluginCommand, or null if not found.
    */
   @Override
-  @Deprecated(forRemoval = true)
+  @Deprecated
   public PluginCommand<?> getIntegrationCommand(String commandName) {
     return null;
   }

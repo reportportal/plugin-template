@@ -13,6 +13,17 @@ Make sure you have the following software installed:
 - JDK version 25
 - Gradle
 
+### Spring Boot 4 / Jackson 3
+
+The plugin is built against the ReportPortal `service-api` (develop), which runs on Spring Boot 4 and Jackson 3. Do not
+declare a Spring Boot version in the plugin: the Boot BOM comes from `service-api`, so unversioned coordinates resolve to
+the host version.
+
+- Use the host's `tools.jackson.databind.json.JsonMapper` (injected into the extension) instead of creating
+  `ObjectMapper` instances. Jackson annotations stay in `com.fasterxml.jackson.annotation`.
+- Declare libraries provided by the host as `compileOnly` without a version.
+- Do not add a `Plugin(PluginWrapper)` constructor: PF4J uses the no-arg constructor.
+
 ### Step 1: Implement the plugin
 
 This template uses an event-driven architecture. You can implement your custom logic by creating event handlers.
@@ -47,29 +58,6 @@ This will generate a `.jar` file in the `build/libs` directory. This file is you
 4. After the plugin is uploaded, it will appear in the list of plugins.
 
 Bundled UI (webpack, `metadata.json`, extension points): see [`ui/README.md`](ui/README.md).
-
-## Sensitive integration parameters
-
-The following integration parameter names are automatically encrypted by service-api before persisting:
-
-- `password`
-- `oauthAccessKey`
-- `apiToken`
-- `apiKey`
-- `accessToken`
-- `managerPassword`
-- `clientSecret`
-- `passwordAttribute`
-
-If your plugin reads any of these params from `Integration.getParams()`, decrypt the value using the injected `BasicTextEncryptor` before use:
-
-```java
-@Autowired
-private BasicTextEncryptor encryptor;
-
-String raw = integration.getParams().getParams().get("password");
-String plain = encryptor.decrypt(raw);
-```
 
 ## Sensitive integration parameters
 

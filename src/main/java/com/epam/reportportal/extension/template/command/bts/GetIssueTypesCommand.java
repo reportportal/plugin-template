@@ -26,9 +26,9 @@ import com.epam.reportportal.base.infrastructure.persistence.entity.organization
 import com.epam.reportportal.base.infrastructure.persistence.entity.project.ProjectRole;
 import com.epam.reportportal.base.infrastructure.persistence.entity.user.UserRole;
 import com.epam.reportportal.extension.command.AbstractExtensionCommand;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * @author <a href="mailto:pavel_bortnik@epam.com">Pavel Bortnik</a>
@@ -36,13 +36,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GetIssueTypesCommand extends AbstractExtensionCommand<List<String>> {
 
-  private final ObjectMapper objectMapper;
+  private final JsonMapper objectMapper;
 
   public GetIssueTypesCommand(ProjectRepository projectRepository,
-      OrganizationUserRepository organizationUserRepository,
-      OrganizationRepository organizationRepository,
-      ProjectUserRepository projectUserRepository,
-      ObjectMapper objectMapper) {
+    OrganizationUserRepository organizationUserRepository,
+    OrganizationRepository organizationRepository,
+    ProjectUserRepository projectUserRepository,
+    JsonMapper objectMapper) {
     super(projectRepository, organizationUserRepository, organizationRepository, projectUserRepository);
     this.objectMapper = objectMapper;
 

@@ -31,9 +31,8 @@ import com.epam.reportportal.base.infrastructure.persistence.entity.user.UserRol
 import com.epam.reportportal.base.infrastructure.rules.exception.ErrorType;
 import com.epam.reportportal.base.infrastructure.rules.exception.ReportPortalException;
 import com.epam.reportportal.extension.command.AbstractExtensionCommand;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * @author <a href="mailto:pavel_bortnik@epam.com">Pavel Bortnik</a>
@@ -41,13 +40,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TestConnectionCommand extends AbstractExtensionCommand<Boolean> {
 
-  private final ObjectMapper objectMapper;
+  private final JsonMapper objectMapper;
 
   public TestConnectionCommand(ProjectRepository projectRepository,
-      OrganizationUserRepository organizationUserRepository,
-      OrganizationRepository organizationRepository,
-      ProjectUserRepository projectUserRepository,
-      ObjectMapper objectMapper) {
+    OrganizationUserRepository organizationUserRepository,
+    OrganizationRepository organizationRepository,
+    ProjectUserRepository projectUserRepository,
+    JsonMapper objectMapper) {
     super(projectRepository, organizationUserRepository, organizationRepository, projectUserRepository);
     this.objectMapper = objectMapper;
 
@@ -62,12 +61,11 @@ public class TestConnectionCommand extends AbstractExtensionCommand<Boolean> {
     return "testConnection";
   }
 
-  @SneakyThrows
   @Override
   public Boolean invokeCommand(Integration integration, PluginCommandRQ pluginCommandRq) {
     IntegrationParams integrationParams = ofNullable(integration.getParams())
-        .orElseThrow(() -> new ReportPortalException(ErrorType.UNABLE_INTERACT_WITH_INTEGRATION,
-            "Integration params are not specified."));
+      .orElseThrow(() -> new ReportPortalException(ErrorType.UNABLE_INTERACT_WITH_INTEGRATION,
+        "Integration params are not specified."));
 
     log.info("pluginCommandRq = {}", objectMapper.writeValueAsString(pluginCommandRq)); // remove
     // TODO: validate connection parameters

@@ -29,12 +29,12 @@ import com.epam.reportportal.base.infrastructure.persistence.entity.user.UserRol
 import com.epam.reportportal.base.infrastructure.rules.exception.ErrorType;
 import com.epam.reportportal.base.infrastructure.rules.exception.ReportPortalException;
 import com.epam.reportportal.extension.command.AbstractExtensionCommand;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * @author <a href="mailto:pavel_bortnik@epam.com">Pavel Bortnik</a>
@@ -44,13 +44,13 @@ public class GetIssueFieldsCommand extends AbstractExtensionCommand<List<PostFor
 
   public static final String ISSUE_TYPE = "issueType";
 
-  private final ObjectMapper objectMapper;
+  private final JsonMapper objectMapper;
 
   public GetIssueFieldsCommand(ProjectRepository projectRepository,
-      OrganizationUserRepository organizationUserRepository,
-      OrganizationRepository organizationRepository,
-      ProjectUserRepository projectUserRepository,
-      ObjectMapper objectMapper) {
+    OrganizationUserRepository organizationUserRepository,
+    OrganizationRepository organizationRepository,
+    ProjectUserRepository projectUserRepository,
+    JsonMapper objectMapper) {
     super(projectRepository, organizationUserRepository, organizationRepository, projectUserRepository);
     this.objectMapper = objectMapper;
 
@@ -83,8 +83,8 @@ public class GetIssueFieldsCommand extends AbstractExtensionCommand<List<PostFor
 
   private static String getIssueType(Map<String, Object> params) {
     return Optional.ofNullable(params.get(ISSUE_TYPE))
-        .map(it -> (String) it)
-        .orElseThrow(() -> new ReportPortalException(ErrorType.BAD_REQUEST_ERROR, "Issue type is not provided"));
+      .map(it -> (String) it)
+      .orElseThrow(() -> new ReportPortalException(ErrorType.BAD_REQUEST_ERROR, "Issue type is not provided"));
   }
 
 }
