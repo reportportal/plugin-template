@@ -229,7 +229,7 @@ public class TemplatePluginExtension implements ReportPortalExtensionPoint, Disp
    * @return The corresponding CommonPluginCommand, or null if not found.
    */
   @Override
-  @Deprecated
+  @Deprecated(forRemoval = true)
   public CommonPluginCommand<?> getCommonCommand(String commandName) {
     return null;
   }
@@ -241,7 +241,7 @@ public class TemplatePluginExtension implements ReportPortalExtensionPoint, Disp
    * @return The corresponding PluginCommand, or null if not found.
    */
   @Override
-  @Deprecated
+  @Deprecated(forRemoval = true)
   public PluginCommand<?> getIntegrationCommand(String commandName) {
     return null;
   }

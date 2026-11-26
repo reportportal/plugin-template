@@ -23,6 +23,6 @@ public class PluginDeletedEventHandler implements EventHandler<PluginDeletedEven
 
   @Override
   public void handle(PluginDeletedEvent event) {
-    // clean up plugin-specific data here (e.g. custom tables created by the plugin)
+
   }
 }
